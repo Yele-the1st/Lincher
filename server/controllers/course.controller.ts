@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import path from "path";
 import ejs from "ejs";
 import sendMail from "../utils/sendMail";
+import notificationModel from "../models/notification.model";
 
 export const uploadCourse = async (
   req: Request,
@@ -229,6 +230,13 @@ export const addQuestion = async (
     // Add this question to our course content
     courseContent.questions.push(newQuestion);
 
+    // create a notification
+    await notificationModel.create({
+      user: req.user?._id,
+      title: "New question recieved",
+      message: `You have a new question in ${courseContent?.title}`,
+    });
+
     // Save the updated course
     await course.save();
 
@@ -304,16 +312,17 @@ export const addAnswer = async (
 
     if (req.user?._id === question.user._id) {
       // create a notification
+
+      await notificationModel.create({
+        user: req.user?._id,
+        title: "New question reply recieved",
+        message: `You have a new question reply in ${courseContent?.title}`,
+      });
     } else {
       const data = {
         name: question.user.name,
         title: courseContent.title,
       };
-
-      // const html = await ejs.renderFile(
-      //   path.join(__dirname, "../mails/question-reply.ejs"),
-      //   data
-      // );
 
       try {
         await sendMail({
@@ -395,6 +404,11 @@ export const addReview = async (
     };
 
     // create  notification
+    await notificationModel.create({
+      user: req.user?._id,
+      title: "New course review recieved",
+      message: `You have a new course review in ${course?.name}`,
+    });
 
     res.status(200).json({
       success: true,
@@ -451,6 +465,24 @@ export const addReplyReview = async (
     res.status(201).json({
       success: true,
       course,
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+};
+
+// Get all courses
+export const getAllCoursesContent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const courses = await courseService.getAllCoursesContent();
+
+    res.status(201).json({
+      success: true,
+      courses,
     });
   } catch (error: any) {
     return next(new ErrorHandler(error.message, 400));

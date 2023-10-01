@@ -1,3 +1,4 @@
+import userModel from "../models/user.model";
 import ErrorHandler from "../utils/ErrorHandler";
 import { redis } from "../utils/redis";
 
@@ -16,4 +17,11 @@ export const getUserById = async (id: string) => {
       400
     );
   }
+};
+
+// Get All users
+export const getAllUsers = async () => {
+  const users = await userModel.find().lean().sort({ createdAt: -1 });
+
+  return users;
 };

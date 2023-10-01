@@ -354,3 +354,22 @@ export const updatePicture = async (
     return next(new ErrorHandler(error.message, 400));
   }
 };
+
+// Get all users
+
+export const getAllUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const users = await userService.getAllUsers();
+
+    res.status(201).json({
+      success: true,
+      users,
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+};

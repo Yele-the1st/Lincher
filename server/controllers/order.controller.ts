@@ -3,12 +3,10 @@ import ErrorHandler from "../utils/ErrorHandler";
 import orderModel, { IOrder } from "../models/order.model";
 import userModel from "../models/user.model";
 import courseModel from "../models/course.model";
-import path from "path";
-import ejs from "ejs";
 import sendMail from "../utils/sendMail";
 import notificationModel from "../models/notification.model";
-import { newOrder } from "../services/order.services";
 import { redis } from "../utils/redis";
+import * as orderService from "../services/order.services";
 
 // create order
 export const createOrder = async (
@@ -41,7 +39,7 @@ export const createOrder = async (
       payment_info,
     };
 
-    const order = await newOrder(data);
+    const order = await orderService.newOrder(data);
 
     const mailData = {
       order: {
@@ -90,6 +88,25 @@ export const createOrder = async (
       user: user?._id,
       title: "New Order",
       message: `You have a new order from ${course?.name}`,
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+};
+
+// Get all orders
+
+export const getAllOrders = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const orders = await orderService.getAllOrders();
+
+    res.status(201).json({
+      success: true,
+      orders,
     });
   } catch (error: any) {
     return next(new ErrorHandler(error.message, 400));

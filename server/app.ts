@@ -7,6 +7,7 @@ import { ErrorMiddleware } from "./middleware/error";
 import userRoutes from "./routes/user.route";
 import courseRoutes from "./routes/course.route";
 import orderRoutes from "./routes/order.route";
+import notificationRoutes from "./routes/notification.route";
 
 // body parser
 app.use(express.json({ limit: "50mb" }));
@@ -25,6 +26,7 @@ app.use(
 app.use("/api/user", userRoutes);
 app.use("/api/course", courseRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/notification", notificationRoutes);
 
 // testing api
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {

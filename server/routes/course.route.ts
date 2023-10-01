@@ -8,6 +8,7 @@ import {
   addReview,
   editCourse,
   getAllCourses,
+  getAllCoursesContent,
   getCourseByUser,
   getSingleCourse,
   uploadCourse,
@@ -58,6 +59,14 @@ router.put(
   isAuthenticated,
   authorizeRoles("admin"),
   catchAsyncError(addReplyReview)
+);
+
+//Get all courses content
+router.get(
+  "/get-all-courses",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  catchAsyncError(getAllCoursesContent)
 );
 
 export default router;

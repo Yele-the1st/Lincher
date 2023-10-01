@@ -2,6 +2,7 @@ import express from "express";
 import { catchAsyncError } from "../middleware/catchAsyncErrors";
 import {
   activateUser,
+  getAllUsers,
   getUserInfo,
   loginUser,
   logoutUser,
@@ -57,4 +58,11 @@ router.put(
   catchAsyncError(updatePicture)
 );
 
+// Get all users
+router.get(
+  "/get-all-users",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  catchAsyncError(getAllUsers)
+);
 export default router;
