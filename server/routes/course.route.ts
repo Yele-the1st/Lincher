@@ -6,6 +6,7 @@ import {
   addQuestion,
   addReplyReview,
   addReview,
+  deleteCourse,
   editCourse,
   getAllCourses,
   getAllCoursesContent,
@@ -67,6 +68,14 @@ router.get(
   isAuthenticated,
   authorizeRoles("admin"),
   catchAsyncError(getAllCoursesContent)
+);
+
+// Get all users
+router.delete(
+  "/delete-course/:id",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  catchAsyncError(deleteCourse)
 );
 
 export default router;

@@ -2,6 +2,7 @@ import express from "express";
 import { catchAsyncError } from "../middleware/catchAsyncErrors";
 import {
   activateUser,
+  deleteUser,
   getAllUsers,
   getUserInfo,
   loginUser,
@@ -12,6 +13,7 @@ import {
   updatePassword,
   updatePicture,
   updateUserInfo,
+  updateUserRole,
 } from "../controllers/user.controller";
 import { authorizeRoles, isAuthenticated } from "../middleware/auth";
 const router = express.Router();
@@ -64,5 +66,21 @@ router.get(
   isAuthenticated,
   authorizeRoles("admin"),
   catchAsyncError(getAllUsers)
+);
+
+// update user role
+router.put(
+  "/update-user-roles",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  catchAsyncError(updateUserRole)
+);
+
+// delete user
+router.delete(
+  "/delete-user/:id",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  catchAsyncError(deleteUser)
 );
 export default router;

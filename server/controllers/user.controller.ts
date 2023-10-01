@@ -373,3 +373,51 @@ export const getAllUsers = async (
     return next(new ErrorHandler(error.message, 400));
   }
 };
+
+// update user role -- only for admin
+export const updateUserRole = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id, role } = req.body;
+
+    const user = await userService.updateUserRole(id, role);
+
+    res.status(201).json({
+      success: true,
+      user,
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+};
+
+// delete user -- only for admin
+export const deleteUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+
+    const user = await userModel.findById(id);
+
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+
+    await user.deleteOne({ id });
+
+    await redis.del(id);
+
+    res.status(201).json({
+      success: true,
+      message: "User successfully deleted",
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+};
