@@ -48,3 +48,82 @@ export const createLayout = async (
     return next(new ErrorHandler(error.message, 400));
   }
 };
+
+// Edit layout
+
+// Helper function to update a layout type
+const updateLayoutType = async (type: string, data: any) => {
+  const layoutData: any = await layoutModel.findOne({ type });
+
+  if (!layoutData) {
+    throw new ErrorHandler(`Layout type '${type}' not found`, 404);
+  }
+
+  return layoutModel.findByIdAndUpdate(layoutData._id, data);
+};
+
+// edit layout
+export const editLayout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { type } = req.body;
+
+    if (type === "Banner") {
+      const { image, title, subTitle } = req.body;
+      await cloudinary.v2.uploader.destroy(image.public_id);
+      const myCloud = await cloudinary.v2.uploader.upload(image, {
+        folder: "layout",
+      });
+      const banner = {
+        image: {
+          public_id: myCloud.public_id,
+          url: myCloud.secure_url,
+        },
+        title,
+        subTitle,
+      };
+      await updateLayoutType("Banner", { banner });
+    } else if (type === "FAQ") {
+      // Assuming req.body.faq is an array of FAQ items
+      const faq = req.body.faq as IFaqItem[];
+      await updateLayoutType("FAQ", { type, faq });
+    } else if (type === "Categories") {
+      const { categories } = req.body;
+      await updateLayoutType("Categories", { type, categories });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Layout edited successfully",
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+};
+
+// get layout by type
+export const getLayoutByType = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { type } = req.params; // Assuming the type is passed as a URL parameter
+
+    const layout = await layoutModel.findOne({ type });
+
+    if (!layout) {
+      throw new ErrorHandler(`Layout type '${type}' not found`, 404);
+    }
+
+    res.status(200).json({
+      success: true,
+      layout,
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+};
