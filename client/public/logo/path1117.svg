@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="58.843513mm"
+   height="53.936935mm"
+   viewBox="0 0 58.843513 53.936935"
+   version="1.1"
+   id="svg5"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-75.578241,-85.105207)">
+    <path
+       sodipodi:type="spiral"
+       style="fill:none;fill-rule:evenodd;stroke:#ca42e8;stroke-width:6.265;stroke-dasharray:none;stroke-opacity:1"
+       id="path1117"
+       sodipodi:cx="44.437298"
+       sodipodi:cy="33.628223"
+       sodipodi:expansion="1"
+       sodipodi:revolution="3"
+       sodipodi:radius="29.579432"
+       sodipodi:argument="-18.340637"
+       sodipodi:t0="0"
+       d="m 44.437298,33.628223 c 1.295119,0.722599 -0.335083,2.1023 -1.201007,2.152574 -2.346601,0.136239 -3.503787,-2.590633 -3.104141,-4.554587 0.714874,-3.513055 4.726727,-5.039195 7.908169,-4.055708 4.668893,1.443307 6.609255,6.887876 5.007274,11.261749 -2.135189,5.829685 -9.057406,8.193429 -14.61533,5.958841 -6.99408,-2.812001 -9.784771,-11.230804 -6.910408,-17.96891 3.48124,-8.16075 13.406356,-11.38024 21.322491,-7.861975 9.328892,4.146154 12.978296,15.583247 8.813542,24.676072 C 56.849515,53.734306 43.896857,57.814356 33.628235,53.001387 21.960375,47.532587 17.449169,33.061943 22.91156,21.618154 29.039538,8.7799525 45.029878,3.83722 57.648374,9.9499121 71.657297,16.736159 77.031834,34.247449 70.268183,48.040307"
+       transform="translate(58.108889,80.898346)"
+       inkscape:export-filename="path1117.svg"
+       inkscape:export-xdpi="64.169182"
+       inkscape:export-ydpi="64.169182" />
+  </g>
+</svg>
