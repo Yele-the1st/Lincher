@@ -14,25 +14,20 @@ interface NavItemsProps {
   activeItem: number;
   isMobile: boolean;
 }
-{
-  /* <div className="hidden md:flex relative font-Josefin  items-center justify-start gap-x-1"> */
-}
-// className=" rounded-[16px] py-[14px] px-[12px] justify-start items-center mr-0  text-[14px] flex static "
-// 2C2C2C 3C4043
 
 export const NavItems: FC<NavItemsProps> = ({ activeItem, isMobile }) => {
   return (
     <>
-      <div className="hidden 900px:flex relative font-Josefin  items-center justify-start gap-x-1">
+      <div className="hidden 1100px:flex relative font-Josefin  items-center justify-start gap-x-1">
         {navItemsData &&
           navItemsData.map((i, index) => (
             <Link href={`${i.url}`} key={index} passHref>
               <span
                 className={`${
                   activeItem === index
-                    ? " dark:bg-accent-dark bg-gray-50 "
+                    ? " dark:bg-accent-dark bg-accent "
                     : " bg-inherit "
-                } hover:bg-accent-hover rounded-[16px] py-2 px-3 justify-start items-center mr-0  text-[14px] flex static`}
+                } hover:bg-gray-50 transition-colors duration-300 ease-in-out  dark:hover:bg-accent-hover rounded-[8px] py-2 px-3 justify-start items-center mr-0  text-[14px] flex static`}
               >
                 {i.name}
               </span>
@@ -40,20 +35,31 @@ export const NavItems: FC<NavItemsProps> = ({ activeItem, isMobile }) => {
           ))}
       </div>
       {isMobile && (
-        <div className="hidden 900px:flex mt-5">
+        <div className="flex 900px:hidden mt-5">
           <div className=" w-full text-center py-6">
             {navItemsData &&
               navItemsData.map((i, index) => (
                 <Link href={`${i.url}`} key={index} passHref>
-                  <span
-                    className={`${
-                      activeItem === index
-                        ? " dark:bg-accent-dark bg-gray-50 "
-                        : " bg-inherit "
-                    } hover:bg-accent-hover rounded-[16px] py-2 px-3 justify-start items-center mr-0  text-[14px] flex static`}
-                  >
-                    {i.name}
-                  </span>
+                  <div className="block">
+                    <div
+                      className={`${
+                        activeItem === index
+                          ? " dark:bg-accent-dark bg-accent "
+                          : " bg-inherit "
+                      } hover:bg-gray-50 transition-colors duration-300 ease-in-out  dark:hover:bg-accent-hover py-2 px-3 justify-start items-center mr-0  text-[14px] flex static`}
+                    >
+                      <button className=" mb-2 h-[32px] relative flex justify-between items-center text-center max-w-full bg-transparent rounded-[8px] font-medium text-[15px] w-auto cursor-pointer ">
+                        <div className=" h-full flex items-center justify-center w-full ">
+                          <div className=" text-background-foregroundL dark:text-background-foregroundD w-full leading-[1] ">
+                            {i.name}
+                          </div>
+                        </div>
+                      </button>
+                    </div>
+                    <div className=" m-0 w-full ">
+                      <hr className=" h-[1px] bg-accent dark:bg-accent-dark" />
+                    </div>
+                  </div>
                 </Link>
               ))}
           </div>

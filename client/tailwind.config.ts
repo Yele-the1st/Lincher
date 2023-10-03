@@ -27,7 +27,7 @@ const config: Config = {
           foregroundD: "#000000",
         },
         accent: {
-          DEFAULT: "#3700B3",
+          DEFAULT: "#E8EDF1",
           dark: "#3C4043",
           hover: "#2C2C2C",
           foregroundD: "#FFFFFF",

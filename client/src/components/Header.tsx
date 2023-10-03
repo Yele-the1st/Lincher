@@ -3,7 +3,10 @@ import { NavItems } from "@/components/NavItems";
 import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
-import ThemeToogle from "./ThemeToogle";
+import { ThemeToogle } from "./ThemeToogle";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { PiUserCircleFill } from "react-icons/pi";
+import HeaderSidebar from "./HeaderSidebar";
 
 interface HeaderProps {
   open: boolean;
@@ -11,7 +14,7 @@ interface HeaderProps {
   activeItem: number;
 }
 
-const Header: FC<HeaderProps> = ({ activeItem }) => {
+const Header: FC<HeaderProps> = ({ activeItem, setOpen }) => {
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
   const [scrollWidth, setScrollWidth] = useState("100%"); // Initial width
 
@@ -52,24 +55,45 @@ const Header: FC<HeaderProps> = ({ activeItem }) => {
     >
       <div
         style={{ width: `${scrollWidth}`, minWidth: "360px" }}
-        className=" h-16 bg-background/75 dark:bg-background-darkHover dark:border-[#1E1E1E] border text-background-foregroundL dark:text-background-foregroundD rounded-[20px] shadow-2xl pl-6 pr-3 flex items-center relative"
+        className=" h-16 bg-background/75 dark:bg-background-darkHover dark:border-[#1E1E1E] border text-background-foregroundL dark:text-background-foregroundD rounded-[16px] shadow-2xl pl-6 pr-3 flex items-center relative"
       >
         <Link href={`/`} className=" mr-6 max-w-full flex items-baseline">
           <Image src={`/logo/path1117.svg`} alt="logo" height={20} width={20} />
           <p className=" ml-1 font-Josefin text-xl">lincher</p>
         </Link>
-        <div className=" w-full justify-end 900px:justify-between  items-baseline flex">
-          <NavItems activeItem={activeItem} isMobile />
+        <div className=" w-full justify-end 1100px:justify-between  items-center flex">
+          <NavItems activeItem={activeItem} isMobile={false} />
 
-          <div>
+          <div className=" flex items-center">
             <ThemeToogle />
+            {/* only for Mobile screens */}
+            <div className="800px:hidden hover:bg-accent  dark:hover:bg-accent-hover  rounded-[8px] py-2 px-3">
+              <HiOutlineMenuAlt3
+                size={20}
+                className="cursor-pointer dark:text-background-foregroundD text-background-foregroundL "
+                onClick={() => setOpenSidebar(true)}
+              />
+            </div>
+            <div className=" hidden 800px:flex hover:bg-accent items-center  dark:hover:bg-accent-hover  rounded-[8px] py-2 px-3">
+              <PiUserCircleFill
+                size={25}
+                className="cursor-pointer dark:text-background-foregroundD text-background-foregroundL "
+                onClick={() => setOpen(true)}
+              />
+              <p className=" ml-1 text-[14px] pt-1 font-Josefin whitespace-nowrap ">
+                Sign in
+              </p>
+            </div>
           </div>
-
-          {/* <div className=" py-2 px-3 text-[14px] dark:bg-primary-dark rounded-[16px] font-Josefin whitespace-nowrap ">
-            Sign in
-          </div> */}
         </div>
       </div>
+      {openSidebar && (
+        <HeaderSidebar
+          openSidebar={openSidebar}
+          setOpenSidebar={setOpenSidebar}
+          activeItem={activeItem}
+        />
+      )}
     </div>
   );
 };
