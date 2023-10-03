@@ -3,6 +3,7 @@ import { NavItems } from "@/components/NavItems";
 import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
+import ThemeToogle from "./ThemeToogle";
 
 interface HeaderProps {
   open: boolean;
@@ -61,7 +62,7 @@ const Header: FC<HeaderProps> = ({ activeItem }) => {
           <NavItems activeItem={activeItem} isMobile />
 
           <div>
-            <ThemeToggle />
+            <ThemeToogle />
           </div>
 
           {/* <div className=" py-2 px-3 text-[14px] dark:bg-primary-dark rounded-[16px] font-Josefin whitespace-nowrap ">
