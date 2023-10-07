@@ -65,22 +65,22 @@ const HeaderSidebar: FC<HeaderSidebarProps> = ({
               src="/svg/Innovation-bro.svg"
               alt={""}
             />
-            <p className=" text-background-foregroundL dark:text-background-foregroundD mb-4 text-base font-Josefin font-normal text-center ">
+            <p className=" text-background-foregroundL dark:text-background-foregroundD mb-4 text-base font-Poppins font-light text-center ">
               Get the best courses, set up classes and, use lincher.com ai bot,
               to get personalized support.
             </p>
             <button
               type="button"
-              className=" h-[44px] mb-4 w-full hover:bg-primary-dark/50 relative flex justify-between items-center text-center max-w-full bg-primary-dark rounded-[8px] px-[28px] font-medium transition-all ease-in-out duration-300   "
+              className=" h-[44px] mb-4 w-full hover:bg-primary-dark/90 relative flex justify-between items-center text-center max-w-full bg-primary-dark rounded-[8px] px-[28px] font-medium transition-all ease-in-out duration-300   "
               onClick={() => setOpenSidebar(false)}
             >
               <div className=" align-middle h-full w-full flex justify-center items-center">
-                <div className=" font-Josefin flex items-center h-full w-full justify-center whitespace-nowrap">
+                <div className=" font-Poppins flex items-center h-full w-full justify-center whitespace-nowrap">
                   Sign in
                 </div>
               </div>
             </button>
-            <p className=" text-primary-dark mb-4 font-medium text-base font-Josefin text-[15px] underline text-center ">
+            <p className=" text-primary-dark mb-4 font-medium text-base font-Poppins text-[15px] underline text-center ">
               <Link href={``}>Create an account</Link>
             </p>
           </div>

@@ -18,7 +18,7 @@ interface NavItemsProps {
 export const NavItems: FC<NavItemsProps> = ({ activeItem, isMobile }) => {
   return (
     <>
-      <div className="hidden 1100px:flex relative font-Josefin  items-center justify-start gap-x-1">
+      <div className="hidden 1100px:flex relative font-Poppins font-light  items-center justify-start gap-x-1">
         {navItemsData &&
           navItemsData.map((i, index) => (
             <Link href={`${i.url}`} key={index} passHref>
@@ -27,7 +27,7 @@ export const NavItems: FC<NavItemsProps> = ({ activeItem, isMobile }) => {
                   activeItem === index
                     ? " dark:bg-accent-dark bg-accent "
                     : " bg-inherit "
-                } hover:bg-gray-50 transition-colors duration-300 ease-in-out  dark:hover:bg-accent-hover rounded-[8px] py-2 px-3 justify-start items-center mr-0  text-[14px] flex static`}
+                } hover:bg-accent transition-colors duration-300 ease-in-out  dark:hover:bg-accent-hover rounded-[8px] py-2 px-3 justify-start items-center mr-0  text-[14px] flex static`}
               >
                 {i.name}
               </span>

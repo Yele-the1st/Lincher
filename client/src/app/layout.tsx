@@ -6,13 +6,13 @@ import { ThemeProvider } from "@/utils/ThemeProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-Poppins",
 });
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
   variable: "--font-Josefin",
 });
 

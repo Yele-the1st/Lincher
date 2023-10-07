@@ -7,6 +7,8 @@ import { ThemeToogle } from "./ThemeToogle";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { PiUserCircleFill } from "react-icons/pi";
 import HeaderSidebar from "./HeaderSidebar";
+import AuthModal from "./auth/AuthModal";
+import WelcomeModal from "./auth/WelcomeModal";
 
 interface HeaderProps {
   open: boolean;
@@ -55,7 +57,7 @@ const Header: FC<HeaderProps> = ({ activeItem, setOpen }) => {
     >
       <div
         style={{ width: `${scrollWidth}`, minWidth: "360px" }}
-        className=" h-16 bg-background/75 dark:bg-background-darkHover dark:border-[#1E1E1E] border text-background-foregroundL dark:text-background-foregroundD rounded-[16px] shadow-2xl pl-6 pr-3 flex items-center relative"
+        className=" h-16 backdrop-blur-md bg-background/75 dark:bg-background-darkHover dark:border-[#1E1E1E] border text-background-foregroundL dark:text-background-foregroundD rounded-[16px] shadow-2xl pl-6 pr-3 flex items-center relative"
       >
         <Link href={`/`} className=" mr-6 max-w-full flex items-baseline">
           <Image src={`/logo/path1117.svg`} alt="logo" height={20} width={20} />
@@ -74,13 +76,13 @@ const Header: FC<HeaderProps> = ({ activeItem, setOpen }) => {
                 onClick={() => setOpenSidebar(true)}
               />
             </div>
-            <div className=" hidden 800px:flex hover:bg-accent items-center  dark:hover:bg-accent-hover  rounded-[8px] py-2 px-3">
+            <div className=" hidden cursor-pointer 800px:flex hover:bg-accent items-center  dark:hover:bg-accent-hover  rounded-[8px] py-2 px-3">
               <PiUserCircleFill
                 size={25}
                 className="cursor-pointer dark:text-background-foregroundD text-background-foregroundL "
                 onClick={() => setOpen(true)}
               />
-              <p className=" ml-1 text-[14px] pt-1 font-Josefin whitespace-nowrap ">
+              <p className=" ml-1 text-[15px] pt-1 font-Poppins font-light whitespace-nowrap ">
                 Sign in
               </p>
             </div>

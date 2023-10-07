@@ -16,20 +16,21 @@ export const ThemeToogle: FC<ThemeToogleProps> = ({}) => {
     return null;
   }
   return (
-    <div className=" flex items-center cursor-pointer justify-center hover:bg-accent  dark:hover:bg-accent-hover rounded-[8px] py-2 px-3">
+    <div>
       {theme === "light" ? (
-        <BiMoon
-          classname="cursor-pointer"
-          fill="black"
-          size={20}
+        <div
           onClick={() => setTheme("dark")}
-        />
+          className="flex items-center cursor-pointer justify-center hover:bg-accent  dark:hover:bg-accent-hover rounded-[8px] py-2 px-3"
+        >
+          <BiMoon classname="cursor-pointer" fill="black" size={20} />
+        </div>
       ) : (
-        <BiSun
-          classname="cursor-pointer"
-          size={20}
+        <div
           onClick={() => setTheme("light")}
-        />
+          className="flex items-center cursor-pointer justify-center hover:bg-accent  dark:hover:bg-accent-hover rounded-[8px] py-2 px-3"
+        >
+          <BiSun classname="cursor-pointer" size={20} />
+        </div>
       )}
     </div>
   );
