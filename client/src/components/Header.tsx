@@ -7,16 +7,27 @@ import { ThemeToogle } from "./ThemeToogle";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { PiUserCircleFill } from "react-icons/pi";
 import HeaderSidebar from "./HeaderSidebar";
+import CustomModal from "../components/CustomModal";
 import AuthModal from "./auth/AuthModal";
-import WelcomeModal from "./auth/WelcomeModal";
+import SignInModal from "./auth/SignInModal";
+import SignUpModal from "./auth/SignUpModal";
+import VerificationModal from "./auth/VerificationModal";
 
 interface HeaderProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   activeItem: number;
+  route: string;
+  setRoute: (route: string) => void;
 }
 
-const Header: FC<HeaderProps> = ({ activeItem, setOpen }) => {
+const Header: FC<HeaderProps> = ({
+  activeItem,
+  setOpen,
+  route,
+  open,
+  setRoute,
+}) => {
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
   const [scrollWidth, setScrollWidth] = useState("100%"); // Initial width
 
@@ -76,13 +87,15 @@ const Header: FC<HeaderProps> = ({ activeItem, setOpen }) => {
                 onClick={() => setOpenSidebar(true)}
               />
             </div>
-            <div className=" hidden cursor-pointer 800px:flex hover:bg-accent items-center  dark:hover:bg-accent-hover  rounded-[8px] py-2 px-3">
+            <div
+              onClick={() => setOpen(true)}
+              className=" hidden cursor-pointer 800px:flex hover:bg-accent items-center  dark:hover:bg-accent-hover  rounded-[8px] py-2 px-3"
+            >
               <PiUserCircleFill
                 size={25}
                 className="cursor-pointer dark:text-background-foregroundD text-background-foregroundL "
-                onClick={() => setOpen(true)}
               />
-              <p className=" ml-1 text-[15px] pt-1 font-Poppins font-light whitespace-nowrap ">
+              <p className=" ml-1 text-[15px] pt-1 font-Josefin font-bold whitespace-nowrap ">
                 Sign in
               </p>
             </div>
@@ -95,6 +108,58 @@ const Header: FC<HeaderProps> = ({ activeItem, setOpen }) => {
           setOpenSidebar={setOpenSidebar}
           activeItem={activeItem}
         />
+      )}
+      {route === "Auth" && (
+        <>
+          {open && (
+            <CustomModal
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={AuthModal}
+            />
+          )}
+        </>
+      )}
+      {route === "Sign-In" && (
+        <>
+          {open && (
+            <CustomModal
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={SignInModal}
+            />
+          )}
+        </>
+      )}
+      {route === "Sign-Up" && (
+        <>
+          {open && (
+            <CustomModal
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={SignUpModal}
+            />
+          )}
+        </>
+      )}
+      {route === "Verification" && (
+        <>
+          {open && (
+            <CustomModal
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={VerificationModal}
+            />
+          )}
+        </>
       )}
     </div>
   );

@@ -9,6 +9,8 @@ interface pageProps {}
 const Page: FC<pageProps> = ({}) => {
   const [open, setOpen] = useState<boolean>(false);
   const [activeItem, setActiveItem] = useState(0);
+  const [route, setRoute] = useState("Auth");
+
   return (
     <div>
       <Heading
@@ -16,7 +18,13 @@ const Page: FC<pageProps> = ({}) => {
         description="Lincher is a platform for student to learn and get help from teachers"
         keywords="Programming, courses, Machine Learning"
       />
-      <Header open={open} setOpen={setOpen} activeItem={activeItem} />
+      <Header
+        open={open}
+        setOpen={setOpen}
+        activeItem={activeItem}
+        setRoute={setRoute}
+        route={route}
+      />
       <Hero />
     </div>
   );
