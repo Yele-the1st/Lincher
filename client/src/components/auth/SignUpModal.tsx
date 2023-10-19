@@ -119,7 +119,7 @@ const SignUpModal: FC<SignUpModalProps> = ({ scroll, setOpen, setRoute }) => {
                       onChange={handleChange}
                       id="name"
                       placeholder="John Smith"
-                      className={`${style.input} `}
+                      className={`block flex-1 border-0 bg-transparent w-full h-full py-1.5 pl-1 text-gray-900 dark:text-white outline-none  placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6`}
                     />
                   </div>
                   {errors.name && touched.name && (
@@ -150,7 +150,7 @@ const SignUpModal: FC<SignUpModalProps> = ({ scroll, setOpen, setRoute }) => {
                       onChange={handleChange}
                       id="email"
                       placeholder="loginmail@gmail.com"
-                      className={`${style.input} `}
+                      className={`block flex-1 border-0 bg-transparent w-full h-full py-1.5 pl-1 text-gray-900 dark:text-white outline-none  placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 `}
                     />
                   </div>
                   {errors.email && touched.email && (
@@ -179,7 +179,7 @@ const SignUpModal: FC<SignUpModalProps> = ({ scroll, setOpen, setRoute }) => {
                       onChange={handleChange}
                       id="password"
                       placeholder="password"
-                      className={`${style.input} `}
+                      className={`block flex-1 border-0 bg-transparent w-full h-full py-1.5 pl-1 text-gray-900 dark:text-white outline-none  placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 `}
                     />
                     {!show ? (
                       <span

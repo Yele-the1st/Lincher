@@ -5,4 +5,6 @@ export const style = {
     " text-sm block font-medium leading-6 font-Poppins text-black dark:text-white",
   input:
     "block flex-1 border-0 bg-transparent w-full h-full py-1.5 pl-1 text-gray-900 dark:text-white outline-none  placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6",
+  button:
+    "flex flex-row justify-center items-center py-3 px-6 rounded-full cursor-pointer bg-indigo-600 min-h-[44px] w-full font-Poppins font-semibold  ",
 };

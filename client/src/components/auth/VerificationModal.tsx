@@ -1,12 +1,8 @@
 import { FC } from "react";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { style } from "@/styles/style";
-import { BiSolidLockAlt } from "react-icons/bi";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { IoReloadSharp } from "react-icons/io5";
 
 interface VerificationModalProps {
   scroll: boolean;
@@ -14,33 +10,58 @@ interface VerificationModalProps {
   setOpen: (open: boolean) => void;
 }
 
-const schema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email")
-    .required("Please enter your email!"),
-  password: Yup.string().required("Please enter your password!").min(6),
-});
+type VerifyNumber = {
+  "0": string;
+  "1": string;
+  "2": string;
+  "3": string;
+};
 
 const VerificationModal: FC<VerificationModalProps> = ({
   scroll,
   setOpen,
   setRoute,
 }) => {
+  const [InvalidError, setInvalidError] = useState<boolean>(false);
+  const [verifyNumber, setVerifyNumber] = useState<VerifyNumber>({
+    0: "",
+    1: "",
+    2: "",
+    3: "",
+  });
+  const inputRefs = [
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+  ];
+
+  const verificationHandler = async () => {
+    console.log(verifyNumber);
+    setInvalidError(true);
+  };
+
+  const handleInputChange = (index: number, value: string) => {
+    if (value.length > 1) {
+      setInvalidError(true);
+    } else {
+      setInvalidError(false);
+      const newVerifyNumber = { ...verifyNumber, [index]: value };
+      setVerifyNumber(newVerifyNumber);
+
+      if (value === "" && index > 0) {
+        inputRefs[index - 1].current?.focus();
+      } else if (value.length === 1 && index < 3) {
+        inputRefs[index + 1].current?.focus();
+      }
+    }
+  };
+  // handleClose function
   const handleClose = () => {
     setOpen(false);
     setRoute("Auth");
   };
-  const [show, setShow] = useState(false);
 
-  const formik = useFormik({
-    initialValues: { email: "", password: "" },
-    validationSchema: schema,
-    onSubmit: async ({ email, password }) => {
-      console.log(email, password);
-    },
-  });
-
-  const { errors, touched, values, handleChange, handleSubmit } = formik;
   return (
     <div className=" fixed top-[32px] my-0 mx-auto sm:relative sm:top-0 sm:max-w-[360px] items-start sm:items-center min-h-full flex w-full rounded-t-[12px] transition-[top] ease-in-out duration-300   ">
       <div className=" sm:relative absolute bottom-[32px]  sm:bottom-auto max-h-[calc((100%-32px)-0px)] rounded-[9px] pb-0 h-auto sm:max-h-full overflow-hidden sm:overflow-visible  w-full shadow-md ">
@@ -57,7 +78,7 @@ const VerificationModal: FC<VerificationModalProps> = ({
             <div className=" align-middle h-full w-full flex justify-center items-center">
               <div className=" flex items-center h-full w-full justify-center">
                 <svg
-                  className=" fill-white w-5 h-5 shrink-0 align-middle "
+                  className=" fill-black dark:fill-white w-5 h-5 shrink-0 align-middle "
                   viewBox="0 0 24 24"
                   preserveAspectRatio="xMidYMid meet"
                 >
@@ -70,8 +91,8 @@ const VerificationModal: FC<VerificationModalProps> = ({
         <div className=" mb-0 p-0 w-full block rounded-t-[16px] overflow-hidden bg-background dark:bg-[#191a1d]">
           <div className=" h-[250px]">
             <Image
-              className=" w-full object-cover h-full "
-              src="/assets/pexels-pixabay-264905.jpg"
+              className=" w-full object-contain h-full "
+              src="/assets/Mail-bro.svg"
               alt="The 3D journey starts here"
               width={400}
               height={200}
@@ -80,12 +101,57 @@ const VerificationModal: FC<VerificationModalProps> = ({
             />
           </div>
           <div className=" px-8 mt-4">
-            <h1 className="  pr-[32px] text-[22px] text-background-foregroundL dark:text-background-foregroundD font-semibold sm:text-[28px] sm:font-bold">
-              Sign in
+            <h1 className=" text-[22px] text-center text-background-foregroundL dark:text-background-foregroundD font-semibold sm:text-[28px] sm:font-bold">
+              Verify your email
             </h1>
           </div>
         </div>
-        <div className=" -mt-1 rounded-b-none sm:rounded-b-[9px] py-6 px-4 sm:py-[16px] sm:px-[32px] w-full bg-background dark:bg-[#191a1d] pb-10  "></div>
+        <div className=" -mt-1 rounded-b-none sm:rounded-b-[9px] py-6 px-4 sm:py-[16px] sm:px-[32px] w-full bg-background dark:bg-[#191a1d] pb-10  ">
+          <p className=" text-[16px] text-background-foregroundL dark:text-background-foregroundD  font-light leading-[24px] mb-2 text-center ">
+            Please enter the 4 digit code sent to your email
+          </p>
+          <div className=" w-full mt-4 flex items-center justify-center space-x-4">
+            {Object.keys(verifyNumber).map((key, index) => (
+              <input
+                type="number"
+                key={key}
+                ref={inputRefs[index]}
+                className={` w-[40px] h-[40px] bg-transparent text-[18px] outline-none font-Poppins text-center  rounded-xl shadow-sm flex items-center text-black dark:text-white justify-center ${
+                  InvalidError
+                    ? " animate-shake ring-2 ring-red-500"
+                    : "ring-1 dark:ring-gray-300 ring-gray-400 "
+                } `}
+                placeholder=""
+                maxLength={1}
+                value={verifyNumber[key as keyof VerifyNumber]}
+                onChange={(e) => handleInputChange(index, e.target.value)}
+              />
+            ))}
+          </div>
+          <div className=" cursor-pointer w-full mt-6 text-primary space-x-1 dark:text-white justify-center flex items-center">
+            <IoReloadSharp classname=" w-5 h-5 " />
+            <p className=" text-primary dark:text-white font-Poppins text-sm font-light">
+              Resend
+            </p>
+          </div>
+          <div className=" w-full mt-6 flex justify-center">
+            <button
+              className={` h-[44px] cursor-pointer items-center flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 `}
+              onClick={verificationHandler}
+            >
+              Verify OTP
+            </button>
+          </div>
+          <p className="mt-6 text-center font-Poppins font-light text-sm dark:text-white text-gray-900">
+            Go back to sign in?{" "}
+            <span
+              onClick={() => setRoute("Sign-In")}
+              className="font-semibold cursor-pointer leading-6 underline text-indigo-600 hover:text-indigo-500"
+            >
+              Sign in
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );
