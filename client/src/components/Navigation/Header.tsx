@@ -1,5 +1,5 @@
 "use client";
-import { NavItems } from "@/components/NavItems";
+import { NavItems } from "@/components/Navigation/NavItems";
 import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
@@ -7,11 +7,11 @@ import { ThemeToogle } from "./ThemeToogle";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { PiUserCircleFill } from "react-icons/pi";
 import HeaderSidebar from "./HeaderSidebar";
-import CustomModal from "../components/CustomModal";
-import AuthModal from "./auth/AuthModal";
-import SignInModal from "./auth/SignInModal";
-import SignUpModal from "./auth/SignUpModal";
-import VerificationModal from "./auth/VerificationModal";
+import CustomModal from "../CustomModal";
+import AuthModal from "../auth/AuthModal";
+import SignInModal from "../auth/SignInModal";
+import SignUpModal from "../auth/SignUpModal";
+import VerificationModal from "../auth/VerificationModal";
 
 interface HeaderProps {
   open: boolean;
