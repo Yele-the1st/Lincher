@@ -1,24 +1,14 @@
 import { FC } from "react";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
-import {
-  AiOutlineEye,
-  AiOutlineEyeInvisible,
-  AiFillGithub,
-} from "react-icons/ai";
-import { FcGoogle } from "react-icons/fc";
-import {
-  BsChevronRight,
-  BsEnvelopeFill,
-  BsFillEnvelopeFill,
-  BsFillPersonFill,
-} from "react-icons/bs";
-import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { BsEnvelopeFill, BsFillPersonFill } from "react-icons/bs";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { style } from "@/styles/style";
 import { BiSolidLockAlt } from "react-icons/bi";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import toast from "react-hot-toast";
 
 interface SignUpModalProps {
   scroll: boolean;
@@ -40,13 +30,33 @@ const SignUpModal: FC<SignUpModalProps> = ({ scroll, setOpen, setRoute }) => {
     setRoute("Auth");
   };
   const [show, setShow] = useState(false);
+  const [register, { isLoading, data, error, isSuccess }] =
+    useRegisterMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      const message = data?.message || "Registration successful";
+      toast.success(message);
+      setRoute("Verification");
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorData = error as any;
+        toast.error(errorData.data.message);
+      }
+    }
+  }, [data?.message, error, isSuccess, setRoute]);
 
   const formik = useFormik({
     initialValues: { name: "", email: "", password: "" },
     validationSchema: schema,
-    onSubmit: async ({ email, password }) => {
-      console.log(email, password);
-      setRoute("Verification");
+    onSubmit: async ({ name, email, password }) => {
+      const data = {
+        name,
+        email,
+        password,
+      };
+      await register(data);
     },
   });
 
@@ -205,13 +215,29 @@ const SignUpModal: FC<SignUpModalProps> = ({ scroll, setOpen, setRoute }) => {
                   )}
                 </div>
               </div>
-              <div className=" w-full mt-5">
-                <input
-                  type="submit"
-                  value="SignUp"
-                  className={` h-[44px] cursor-pointer flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
-                />
-              </div>
+              {isLoading ? (
+                <div className=" w-full px-[80px] p-3 flex justify-center items-center overflow-hidden box-border">
+                  <div className=" justify-center flex items-center">
+                    <div className=" w-2 h-2 rounded-full mr-1.5 bg-indigo-600 animate-loading"></div>
+                    <div
+                      style={{ animationDelay: "0.1s" }}
+                      className=" w-2 h-2 rounded-full mr-1.5 bg-indigo-600 animate-loading"
+                    ></div>
+                    <div
+                      style={{ animationDelay: "0.2s" }}
+                      className=" w-2 h-2 rounded-full mr-1.5 bg-indigo-600 animate-loading"
+                    ></div>
+                  </div>
+                </div>
+              ) : (
+                <div className=" w-full mt-5">
+                  <input
+                    type="submit"
+                    value="SignUp"
+                    className={` h-[44px] cursor-pointer flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                  />
+                </div>
+              )}
             </form>
             <p className="mt-6 text-center font-Josefin text-sm text-gray-500">
               Already have an account?{" "}

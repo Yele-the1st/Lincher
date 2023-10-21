@@ -70,6 +70,7 @@ const config: Config = {
         shake: "shake 0.5s ease-in-out",
         "vibrate-slow":
           "vibrate-slow 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) 1",
+        loading: "1.25s ease-in-out 0s infinite normal none running loading",
       },
       keyframes: {
         changeBackgroundColor: {
@@ -121,6 +122,24 @@ const config: Config = {
           },
           "20%, 40%, 60%, 80%": {
             transform: "translateX(5px)",
+          },
+        },
+        loading: {
+          "0%": {
+            opacity: "0.3",
+            transform: "translateY(0px)",
+          },
+          "20%": {
+            opacity: "1",
+            transform: "translateY(-3px)",
+          },
+          "40%": {
+            opacity: "0.3",
+            transform: "translateY(0px)",
+          },
+          "100%": {
+            opacity: "0.3",
+            transform: "translateY(0px)",
           },
         },
       },

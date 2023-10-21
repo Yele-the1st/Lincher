@@ -1,8 +1,11 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 
 import { IoReloadSharp } from "react-icons/io5";
+import { useSelector } from "react-redux";
+import { useActivationMutation } from "@/redux/features/auth/authApi";
 
 interface VerificationModalProps {
   scroll: boolean;
@@ -22,7 +25,27 @@ const VerificationModal: FC<VerificationModalProps> = ({
   setOpen,
   setRoute,
 }) => {
+  const { token } = useSelector((state: any) => state.auth);
+  const [activation, { isLoading, isSuccess, error }] = useActivationMutation();
   const [InvalidError, setInvalidError] = useState<boolean>(false);
+  const [limitText, setLimitText] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Account activated successfully");
+      setRoute("Sign-In");
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorData = error as any;
+        toast.error(errorData.data.message);
+        setInvalidError(true);
+      } else {
+        console.log("An error occured in activation:", error);
+      }
+    }
+  }, [error, isSuccess, setRoute]);
+
   const [verifyNumber, setVerifyNumber] = useState<VerifyNumber>({
     0: "",
     1: "",
@@ -37,25 +60,42 @@ const VerificationModal: FC<VerificationModalProps> = ({
   ];
 
   const verificationHandler = async () => {
-    console.log(verifyNumber);
-    setInvalidError(true);
+    const verificationNumber = Object.values(verifyNumber).join("");
+    if (verificationNumber.length !== 4) {
+      setInvalidError(true);
+      return;
+    }
+    await activation({
+      activation_token: token,
+      activation_code: verificationNumber,
+    });
   };
 
   const handleInputChange = (index: number, value: string) => {
     if (value.length > 1) {
-      setInvalidError(true);
-    } else {
-      setInvalidError(false);
-      const newVerifyNumber = { ...verifyNumber, [index]: value };
-      setVerifyNumber(newVerifyNumber);
+      // If the value is longer than 1 character, truncate it to a single character
+      value = value[0];
+    }
 
-      if (value === "" && index > 0) {
+    setInvalidError(false);
+
+    // Update the input field value
+    const newVerifyNumber = { ...verifyNumber, [index]: value };
+    setVerifyNumber(newVerifyNumber);
+
+    if (value === "") {
+      // If the value is empty and backspace is pressed, focus on the previous input field
+      if (index > 0) {
         inputRefs[index - 1].current?.focus();
-      } else if (value.length === 1 && index < 3) {
+      }
+    } else if (value.length === 1) {
+      // If a single character is entered, focus on the next input field if it's not the last one
+      if (index < Object.keys(verifyNumber).length - 1) {
         inputRefs[index + 1].current?.focus();
       }
     }
   };
+
   // handleClose function
   const handleClose = () => {
     setOpen(false);
@@ -125,6 +165,12 @@ const VerificationModal: FC<VerificationModalProps> = ({
                 maxLength={1}
                 value={verifyNumber[key as keyof VerifyNumber]}
                 onChange={(e) => handleInputChange(index, e.target.value)}
+                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                  if (e.key === "Backspace" && e.currentTarget.value === "") {
+                    e.preventDefault(); // Prevent the default backspace behavior
+                    handleInputChange(index, ""); // Handle backspace as if a value was cleared
+                  }
+                }}
               />
             ))}
           </div>
@@ -134,14 +180,30 @@ const VerificationModal: FC<VerificationModalProps> = ({
               Resend
             </p>
           </div>
-          <div className=" w-full mt-6 flex justify-center">
-            <button
-              className={` h-[44px] cursor-pointer items-center flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 `}
-              onClick={verificationHandler}
-            >
-              Verify OTP
-            </button>
-          </div>
+          {isLoading ? (
+            <div className=" mt-6 w-full px-[80px] p-3 flex justify-center items-center overflow-hidden box-border">
+              <div className=" justify-center flex items-center">
+                <div className=" w-2 h-2 rounded-full mr-1.5 bg-indigo-600 animate-loading"></div>
+                <div
+                  style={{ animationDelay: "0.1s" }}
+                  className=" w-2 h-2 rounded-full mr-1.5 bg-indigo-600 animate-loading"
+                ></div>
+                <div
+                  style={{ animationDelay: "0.2s" }}
+                  className=" w-2 h-2 rounded-full mr-1.5 bg-indigo-600 animate-loading"
+                ></div>
+              </div>
+            </div>
+          ) : (
+            <div className=" w-full mt-6 flex justify-center">
+              <button
+                className={` h-[44px] cursor-pointer items-center flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 `}
+                onClick={verificationHandler}
+              >
+                Verify OTP
+              </button>
+            </div>
+          )}
           <p className="mt-6 text-center font-Poppins font-light text-sm dark:text-white text-gray-900">
             Go back to sign in?{" "}
             <span
