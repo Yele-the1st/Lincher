@@ -178,9 +178,12 @@ export const getUserInfo = async (
 
     const user = await userService.getUserById(userId);
 
+    // Exclude password field from user object
+    const { password, ...userInfoWithoutPassword } = user;
+
     res.status(201).json({
       success: true,
-      user,
+      user: userInfoWithoutPassword,
     });
   } catch (error: any) {
     return next(new ErrorHandler(error.message, 400));

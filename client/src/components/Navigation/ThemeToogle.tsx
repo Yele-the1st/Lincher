@@ -22,14 +22,14 @@ export const ThemeToogle: FC<ThemeToogleProps> = ({}) => {
           onClick={() => setTheme("dark")}
           className="flex items-center cursor-pointer justify-center hover:bg-accent  dark:hover:bg-accent-hover rounded-[8px] py-2 px-3"
         >
-          <BiMoon classname="cursor-pointer" fill="black" size={20} />
+          <BiMoon className="cursor-pointer" fill="black" size={20} />
         </div>
       ) : (
         <div
           onClick={() => setTheme("light")}
           className="flex items-center cursor-pointer justify-center hover:bg-accent  dark:hover:bg-accent-hover rounded-[8px] py-2 px-3"
         >
-          <BiSun classname="cursor-pointer" size={20} />
+          <BiSun className="cursor-pointer" size={20} />
         </div>
       )}
     </div>

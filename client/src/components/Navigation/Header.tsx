@@ -12,6 +12,7 @@ import AuthModal from "../auth/AuthModal";
 import SignInModal from "../auth/SignInModal";
 import SignUpModal from "../auth/SignUpModal";
 import VerificationModal from "../auth/VerificationModal";
+import { useSelector } from "react-redux";
 
 interface HeaderProps {
   open: boolean;
@@ -30,6 +31,7 @@ const Header: FC<HeaderProps> = ({
 }) => {
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
   const [scrollWidth, setScrollWidth] = useState("100%"); // Initial width
+  const { user } = useSelector((state: any) => state.auth);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,9 +64,11 @@ const Header: FC<HeaderProps> = ({
     };
   }, []);
 
+  console.log(user);
+
   return (
     <div
-      className={` w-full z-[99] w- h-[90px] flex flex-col justify-end items-center px-6 fixed top-0`}
+      className={` w-full z-20 w- h-[90px] flex flex-col justify-end items-center px-6 fixed top-0`}
     >
       <div
         style={{ width: `${scrollWidth}`, minWidth: "360px" }}
@@ -87,18 +91,39 @@ const Header: FC<HeaderProps> = ({
                 onClick={() => setOpenSidebar(true)}
               />
             </div>
-            <div
-              onClick={() => setOpen(true)}
-              className=" hidden cursor-pointer 800px:flex hover:bg-accent items-center  dark:hover:bg-accent-hover  rounded-[8px] py-2 px-3"
-            >
-              <PiUserCircleFill
-                size={25}
-                className="cursor-pointer dark:text-background-foregroundD text-background-foregroundL "
-              />
-              <p className=" ml-1 text-[15px] pt-1 font-Josefin font-bold whitespace-nowrap ">
-                Sign in
-              </p>
-            </div>
+
+            {user ? (
+              <div className=" hidden cursor-pointer 800px:flex hover:bg-accent items-center  dark:hover:bg-accent-hover  rounded-[8px] py-2 px-3">
+                {user.avatar ? (
+                  <Image
+                    src={user?.avatar}
+                    alt=""
+                    className="cursor-pointer dark:text-background-foregroundD text-background-foregroundL "
+                  />
+                ) : (
+                  <PiUserCircleFill
+                    size={25}
+                    className="cursor-pointer dark:text-background-foregroundD text-background-foregroundL "
+                  />
+                )}
+                <p className=" ml-1 text-[15px] pt-1 font-Josefin font-bold whitespace-nowrap ">
+                  {user?.name}
+                </p>
+              </div>
+            ) : (
+              <div
+                onClick={() => setOpen(true)}
+                className=" hidden cursor-pointer 800px:flex hover:bg-accent items-center  dark:hover:bg-accent-hover  rounded-[8px] py-2 px-3"
+              >
+                <PiUserCircleFill
+                  size={25}
+                  className="cursor-pointer dark:text-background-foregroundD text-background-foregroundL "
+                />
+                <p className=" ml-1 text-[15px] pt-1 font-Josefin font-bold whitespace-nowrap ">
+                  Sign in
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

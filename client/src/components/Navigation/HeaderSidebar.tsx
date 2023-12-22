@@ -25,7 +25,7 @@ const HeaderSidebar: FC<HeaderSidebarProps> = ({
     <div
       id="screen"
       onClick={handleClose}
-      className={`  fixed inset-0 h-full w-full bg-[rgba(37,42,49,0.5)] z-[999999] transition-colors duration-150 ease-in-out 800px:hidden`}
+      className={`  fixed inset-0 h-full w-full bg-[rgba(37,42,49,0.5)] z-10 transition-colors duration-150 ease-in-out 800px:hidden`}
     >
       <aside
         style={{
