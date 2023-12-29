@@ -6,6 +6,7 @@ import { Josefin_Sans } from "next/font/google";
 import { ThemeProvider } from "@/Providers/ThemeProvider";
 import ReduxProvider from "@/Providers/ReduxProvider";
 import { Toaster } from "react-hot-toast";
+import { SessionProvider } from "next-auth/react";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -30,10 +31,12 @@ export default function RootLayout({
         className={`${poppins.variable} ${josefin.variable} bg-background dark:bg-background-dark duration-300`}
       >
         <ReduxProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
-            <Toaster position="bottom-right" reverseOrder={false} />
-          </ThemeProvider>
+          <SessionProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              {children}
+              <Toaster position="bottom-right" reverseOrder={false} />
+            </ThemeProvider>
+          </SessionProvider>
         </ReduxProvider>
       </body>
     </html>

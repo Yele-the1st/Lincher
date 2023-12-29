@@ -1,9 +1,10 @@
 import { FC } from "react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { BsChevronRight, BsFillEnvelopeFill, BsGithub } from "react-icons/bs";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 interface AuthModalProps {
   scroll: boolean;
   setRoute: (route: string) => void;
@@ -78,6 +79,7 @@ const AuthModal: FC<AuthModalProps> = ({ scroll, setRoute, setOpen }) => {
           </p>
           <div className="  gap-3 flex flex-col items-center w-full mb-4 ">
             <button
+              onClick={() => signIn("google")}
               type="button"
               className=" relative h-[44px] flex justify-between items-center text-center max-w-full transition-colors ease-in-out duration-500 bg-[#EEE5FD] hover:bg-[#D5CCE4] dark:hover:bg-[rgba(255,255,255,.06)] dark:bg-[rgba(255,255,255,.03)] px-4 rounded-[6px] w-full cursor-pointer"
             >
@@ -113,6 +115,7 @@ const AuthModal: FC<AuthModalProps> = ({ scroll, setRoute, setOpen }) => {
             </button>
 
             <button
+              onClick={() => signIn("github")}
               type="button"
               className=" relative h-[44px] flex justify-between items-center text-center max-w-full transition-colors ease-in-out duration-500 bg-black dark:hover:bg-[rgba(0,0,0,.4)]  px-4 rounded-[6px] w-full cursor-pointer"
             >

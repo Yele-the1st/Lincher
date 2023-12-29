@@ -1,4 +1,5 @@
 "use client";
+
 import { NavItems } from "@/components/Navigation/NavItems";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,6 +14,10 @@ import SignInModal from "../auth/SignInModal";
 import SignUpModal from "../auth/SignUpModal";
 import VerificationModal from "../auth/VerificationModal";
 import { useSelector } from "react-redux";
+import { getAuthSession } from "@/lib/auth";
+import { useSocialAuthMutation } from "@/redux/features/auth/authApi";
+import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 
 interface HeaderProps {
   open: boolean;
@@ -32,6 +37,20 @@ const Header: FC<HeaderProps> = ({
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
   const [scrollWidth, setScrollWidth] = useState("100%"); // Initial width
   const { user } = useSelector((state: any) => state.auth);
+  const { data } = useSession();
+  const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
+
+  useEffect(() => {
+    if (!user) {
+      if (data) {
+        socialAuth({
+          email: data?.user?.email,
+          name: data?.user?.name,
+          avatar: data?.user?.image,
+        });
+      }
+    }
+  }, [data, socialAuth, user]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,8 +83,6 @@ const Header: FC<HeaderProps> = ({
     };
   }, []);
 
-  console.log(user);
-
   return (
     <div
       className={` w-full z-20 w- h-[90px] flex flex-col justify-end items-center px-6 fixed top-0`}
@@ -93,23 +110,25 @@ const Header: FC<HeaderProps> = ({
             </div>
 
             {user ? (
-              <div className=" hidden cursor-pointer 800px:flex hover:bg-accent items-center  dark:hover:bg-accent-hover  rounded-[8px] py-2 px-3">
-                {user.avatar ? (
-                  <Image
-                    src={user?.avatar}
-                    alt=""
-                    className="cursor-pointer dark:text-background-foregroundD text-background-foregroundL "
-                  />
-                ) : (
-                  <PiUserCircleFill
-                    size={25}
-                    className="cursor-pointer dark:text-background-foregroundD text-background-foregroundL "
-                  />
-                )}
-                <p className=" ml-1 text-[15px] pt-1 font-Josefin font-bold whitespace-nowrap ">
-                  {user?.name}
-                </p>
-              </div>
+              <Link href={`/profile`}>
+                <div className=" hidden cursor-pointer 800px:flex hover:bg-accent items-center  dark:hover:bg-accent-hover  rounded-[8px] py-2 px-3">
+                  {user?.avatar?.url ? (
+                    <Image
+                      src={user?.avatar?.url}
+                      alt=""
+                      height={30}
+                      width={30}
+                      className="cursor-pointer w-8 h-8 rounded-full"
+                      loading="eager"
+                    />
+                  ) : (
+                    <PiUserCircleFill
+                      size={25}
+                      className="cursor-pointer dark:text-background-foregroundD text-background-foregroundL "
+                    />
+                  )}
+                </div>
+              </Link>
             ) : (
               <div
                 onClick={() => setOpen(true)}
