@@ -1,10 +1,11 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import Image from "next/image";
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { BsChevronRight, BsFillEnvelopeFill, BsGithub } from "react-icons/bs";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import toast from "react-hot-toast";
 interface AuthModalProps {
   scroll: boolean;
   setRoute: (route: string) => void;
@@ -12,6 +13,7 @@ interface AuthModalProps {
 }
 
 const AuthModal: FC<AuthModalProps> = ({ scroll, setRoute, setOpen }) => {
+  const [loading, setLoading] = useState(false);
   const handleEMailClick = () => {
     setOpen(true);
     setRoute("Sign-In");
@@ -20,6 +22,17 @@ const AuthModal: FC<AuthModalProps> = ({ scroll, setRoute, setOpen }) => {
   const handleClose = () => {
     setOpen(false);
     setRoute("Auth");
+  };
+
+  const handleSignIn = async (provider: any) => {
+    setLoading(true);
+    try {
+      await signIn(provider);
+    } catch (error) {
+      toast.success("There was a problem.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -79,24 +92,6 @@ const AuthModal: FC<AuthModalProps> = ({ scroll, setRoute, setOpen }) => {
           </p>
           <div className="  gap-3 flex flex-col items-center w-full mb-4 ">
             <button
-              onClick={() => signIn("google")}
-              type="button"
-              className=" relative h-[44px] flex justify-between items-center text-center max-w-full transition-colors ease-in-out duration-500 bg-[#EEE5FD] hover:bg-[#D5CCE4] dark:hover:bg-[rgba(255,255,255,.06)] dark:bg-[rgba(255,255,255,.03)] px-4 rounded-[6px] w-full cursor-pointer"
-            >
-              <div className=" align-middle h-full flex w-full justify-start items-center">
-                <div className=" flex items-center justify-center mr-2 ">
-                  <FcGoogle className=" w-5 h-5 shrink-0 align-middle" />
-                </div>
-                <div className=" text-background-foregroundL dark:text-background-foregroundD  text-[15px] font-medium inline-block w-full text-left leading-[1]">
-                  Google
-                </div>
-                <div className=" text-background-foregroundL dark:text-background-foregroundD  flex items-center justify-center ml-2 ">
-                  <BsChevronRight className=" h-3 w-3 stroke-2" />
-                </div>
-              </div>
-            </button>
-
-            <button
               onClick={handleEMailClick}
               type="button"
               className=" relative h-[44px] flex justify-between items-center text-center max-w-full transition-colors ease-in-out duration-500 dark:hover:bg-[rgba(255,255,255,.06)] dark:bg-[rgba(255,255,255,.03)] bg-[#EEE5FD] hover:bg-[#D5CCE4]  px-4 rounded-[6px] w-full cursor-pointer"
@@ -114,24 +109,59 @@ const AuthModal: FC<AuthModalProps> = ({ scroll, setRoute, setOpen }) => {
               </div>
             </button>
 
-            <button
-              onClick={() => signIn("github")}
-              type="button"
-              className=" relative h-[44px] flex justify-between items-center text-center max-w-full transition-colors ease-in-out duration-500 bg-black dark:hover:bg-[rgba(0,0,0,.4)]  px-4 rounded-[6px] w-full cursor-pointer"
-            >
-              <div className=" align-middle h-full flex w-full justify-start items-center">
-                <div className=" flex items-center justify-center mr-2 ">
-                  <BsGithub className=" w-5 h-5 shrink-0 align-middle" />
-                </div>
-                <div className=" text-[15px] font-medium inline-block w-full text-left leading-[1]">
-                  Github
-                </div>
-                <div className=" flex items-center justify-center ml-2 ">
-                  <BsChevronRight className=" h-3 w-3 stroke-2" />
+            {loading ? (
+              <div className=" mt-6 w-full px-[80px] p-3 flex justify-center items-center overflow-hidden box-border">
+                <div className=" justify-center flex items-center">
+                  <div className=" w-2 h-2 rounded-full mr-1.5 bg-indigo-600 animate-loading"></div>
+                  <div
+                    style={{ animationDelay: "0.1s" }}
+                    className=" w-2 h-2 rounded-full mr-1.5 bg-indigo-600 animate-loading"
+                  ></div>
+                  <div
+                    style={{ animationDelay: "0.2s" }}
+                    className=" w-2 h-2 rounded-full mr-1.5 bg-indigo-600 animate-loading"
+                  ></div>
                 </div>
               </div>
-            </button>
+            ) : (
+              <>
+                <button
+                  onClick={() => handleSignIn("google")}
+                  type="button"
+                  className=" relative h-[44px] flex justify-between items-center text-center max-w-full transition-colors ease-in-out duration-500 bg-[#EEE5FD] hover:bg-[#D5CCE4] dark:hover:bg-[rgba(255,255,255,.06)] dark:bg-[rgba(255,255,255,.03)] px-4 rounded-[6px] w-full cursor-pointer"
+                >
+                  <div className=" align-middle h-full flex w-full justify-start items-center">
+                    <div className=" flex items-center justify-center mr-2 ">
+                      <FcGoogle className=" w-5 h-5 shrink-0 align-middle" />
+                    </div>
+                    <div className=" text-background-foregroundL dark:text-background-foregroundD  text-[15px] font-medium inline-block w-full text-left leading-[1]">
+                      Google
+                    </div>
+                    <div className=" text-background-foregroundL dark:text-background-foregroundD  flex items-center justify-center ml-2 ">
+                      <BsChevronRight className=" h-3 w-3 stroke-2" />
+                    </div>
+                  </div>
+                </button>
 
+                <button
+                  onClick={() => handleSignIn("github")}
+                  type="button"
+                  className=" relative h-[44px] flex justify-between items-center text-center max-w-full transition-colors ease-in-out duration-500 bg-black dark:hover:bg-[rgba(0,0,0,.4)]  px-4 rounded-[6px] w-full cursor-pointer"
+                >
+                  <div className=" align-middle h-full flex w-full justify-start items-center">
+                    <div className=" flex items-center justify-center mr-2 ">
+                      <BsGithub className=" w-5 h-5 shrink-0 align-middle" />
+                    </div>
+                    <div className=" text-[15px] font-medium inline-block w-full text-left leading-[1]">
+                      Github
+                    </div>
+                    <div className=" flex items-center justify-center ml-2 ">
+                      <BsChevronRight className=" h-3 w-3 stroke-2" />
+                    </div>
+                  </div>
+                </button>
+              </>
+            )}
             {/* <Link href="/"> */}
             <p className="text-background-foregroundL dark:text-gray-400 underline font-semibold text-[13px] inline-flex items-center">
               Continue as a guest

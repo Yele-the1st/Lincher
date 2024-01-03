@@ -18,6 +18,7 @@ import { getAuthSession } from "@/lib/auth";
 import { useSocialAuthMutation } from "@/redux/features/auth/authApi";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 interface HeaderProps {
   open: boolean;
@@ -50,7 +51,12 @@ const Header: FC<HeaderProps> = ({
         });
       }
     }
-  }, [data, socialAuth, user]);
+    if (data === null) {
+      if (isSuccess) {
+        toast.success("Login Successfully");
+      }
+    }
+  }, [data, isSuccess, socialAuth, user]);
 
   useEffect(() => {
     const handleScroll = () => {
