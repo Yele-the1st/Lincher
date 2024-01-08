@@ -1,5 +1,7 @@
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+import { useUpdateAvatarMutation } from "@/redux/features/user/userApi";
 import Image from "next/image";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 interface ProfileInfoProps {
   avatar: string | null;
@@ -10,10 +12,33 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ avatar, user }) => {
   const [name, setname] = useState(user && user.name);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [uploading, setUploading] = useState(false); // State to track upload status
+  const [updateAvatar, { isSuccess, error }] = useUpdateAvatarMutation();
+  const [loadUser, setLoadUser] = useState(false);
+  const {} = useLoadUserQuery(undefined, { skip: loadUser ? false : true });
 
   const imageHandler = async (e: any) => {
-    console.log("hhh");
+    const fileReader = new FileReader();
+
+    fileReader.onload = () => {
+      if (fileReader.readyState === 2) {
+        const avatar = fileReader.result;
+        updateAvatar({
+          avatar: avatar,
+        });
+      }
+    };
+
+    fileReader.readAsDataURL(e.target.files[0]);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setLoadUser(true);
+    }
+    if (error) {
+      console.log(error);
+    }
+  }, [error, isSuccess]);
 
   const handleSubmit = async (e: any) => {
     console.log("submit");
@@ -81,11 +106,13 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ avatar, user }) => {
                     <div className="cursor-pointer w-auto ">
                       <input
                         type="file"
-                        accept="image/*"
-                        id="profileImage"
+                        name=""
+                        accept="image/png,image/jpeg,image/jpg,image/webp"
+                        id="avatar"
                         style={{ display: "none" }}
+                        onChange={imageHandler}
                       />
-                      <label htmlFor="profileImage">
+                      <label htmlFor="avatar">
                         <div className="cursor-pointer h-[44px] rounded-[3px] px-4 inline-flex justify-between items-center text-center max-w-full bg-[rgb(245,247,249)] shadow mb-[24px] w-auto text-[15px] font-medium ">
                           <div className=" align-middle h-full flex justify-between items-center">
                             <div className=" text-black flex items-center">
@@ -115,17 +142,20 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ avatar, user }) => {
                   <div className=" cursor-pointer w-full ">
                     <input
                       type="file"
-                      accept="image/*"
-                      id="profileImage"
+                      accept="image/*,"
+                      id="avatar"
                       style={{ display: "none" }}
+                      onChange={imageHandler}
                     />
-                    <div className=" w-full h-[44px] rounded-[3px] px-4 inline-flex justify-center items-center text-center max-w-full bg-[rgb(245,247,249)] shadow mb-[24px]  text-[15px] font-medium ">
-                      <div className=" align-middle h-full flex justify-between items-center">
-                        <div className=" text-black flex items-center">
-                          Upload
+                    <label htmlFor="avatar">
+                      <div className=" cursor-pointer w-full h-[44px] rounded-[3px] px-4 inline-flex justify-center items-center text-center max-w-full bg-[rgb(245,247,249)] shadow mb-[24px]  text-[15px] font-medium ">
+                        <div className=" align-middle h-full flex justify-between items-center">
+                          <div className=" text-black flex items-center">
+                            Upload
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </label>
                   </div>
                   <div className=" cursor-pointer w-full ">
                     <button className="w-full">
