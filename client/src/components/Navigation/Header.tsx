@@ -117,14 +117,20 @@ const Header: FC<HeaderProps> = ({
 
             {user ? (
               <Link href={`/profile`}>
-                <div className=" hidden cursor-pointer 800px:flex hover:bg-accent items-center  dark:hover:bg-accent-hover  rounded-[8px] py-2 px-3">
+                <div
+                  className={` hidden cursor-pointer 800px:flex hover:bg-accent items-center  dark:hover:bg-accent-hover  rounded-[8px] py-2 px-3 ${
+                    activeItem === 5 ? "" : ""
+                  }`}
+                >
                   {user?.avatar?.url ? (
                     <Image
                       src={user?.avatar?.url}
                       alt=""
                       height={30}
                       width={30}
-                      className="cursor-pointer w-8 h-8 rounded-full"
+                      className={`cursor-pointer w-8 h-8 object-cover overflow-hidden rounded-full ${
+                        activeItem === 5 ? " border-2 border-[#6401EC]" : ""
+                      }`}
                       loading="eager"
                     />
                   ) : (

@@ -38,7 +38,7 @@ const SideBarProfile: FC<SideBarProfileProps> = ({
             alt=""
             height={30}
             width={30}
-            className="cursor-pointer w-8 h-8 rounded-full"
+            className="cursor-pointer w-8 h-8 object-cover overflow-hidden  rounded-full"
             loading="eager"
           />
         ) : (

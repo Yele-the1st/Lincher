@@ -230,17 +230,18 @@ export const updateUserInfo = async (
   next: NextFunction
 ) => {
   try {
-    const { name, email } = req.body as IUpdateUserInfo;
+    const { name } = req.body as IUpdateUserInfo;
     const userId = req.user?._id;
     const user = await userModel.findById(userId);
 
-    if (email && user) {
-      const isEmailExist = await userModel.findOne({ email });
-      if (isEmailExist) {
-        return next(new ErrorHandler("Email already exist", 400));
-      }
-      user.email = email;
-    }
+    // if (email && user) {
+    //   const isEmailExist = await userModel.findOne({ email });
+    //   if (isEmailExist) {
+    //     return next(new ErrorHandler("Email already exist", 400));
+    //   }
+    //   user.email = email;
+    // }
+
     if (name && user) {
       user.name = name;
     }
@@ -343,6 +344,53 @@ export const updatePicture = async (
     }
 
     await user?.save();
+
+    await redis.set(userId, JSON.stringify(user));
+
+    res.status(200).json({
+      success: true,
+      message: "Profile picture updated successfully",
+      user: {
+        _id: user?._id,
+        avatar: user?.avatar,
+        // Include other user properties as needed
+      },
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+};
+
+export const deletePicture = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req?.user?._id;
+
+    if (!userId) {
+      return next(new ErrorHandler("User ID not provided", 400));
+    }
+
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+
+    // Delete the existing avatar if it exists
+    if (user?.avatar?.public_id) {
+      await cloudinary.v2.uploader.destroy(user?.avatar?.public_id);
+    }
+
+    // Update the user's avatar information
+    user.avatar = {
+      public_id: "",
+      url: "",
+    };
+
+    await user.save();
 
     await redis.set(userId, JSON.stringify(user));
 

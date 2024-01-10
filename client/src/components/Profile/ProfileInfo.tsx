@@ -1,7 +1,16 @@
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
-import { useUpdateAvatarMutation } from "@/redux/features/user/userApi";
+import {
+  useDeletePictureMutation,
+  useUpdateAvatarMutation,
+  useUpdatePasswordMutation,
+} from "@/redux/features/user/userApi";
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
+import { PiUserCircleFill } from "react-icons/pi";
+import PersonalDetail from "./PersonalDetail";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { BiSolidLockAlt } from "react-icons/bi";
+import toast from "react-hot-toast";
 
 interface ProfileInfoProps {
   avatar: string | null;
@@ -9,55 +18,90 @@ interface ProfileInfoProps {
 }
 
 const ProfileInfo: FC<ProfileInfoProps> = ({ avatar, user }) => {
-  const [name, setname] = useState(user && user.name);
-  const [uploadedFile, setUploadedFile] = useState(null);
-  const [uploading, setUploading] = useState(false); // State to track upload status
-  const [updateAvatar, { isSuccess, error }] = useUpdateAvatarMutation();
-  const [loadUser, setLoadUser] = useState(false);
-  const {} = useLoadUserQuery(undefined, { skip: loadUser ? false : true });
+  const [open, setOpen] = useState(false);
+  const [show, setShow] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [entered, setEntered] = useState(1);
+  const [uploadedFile, setUploadedFile] = useState<null | ArrayBuffer | string>(
+    null
+  );
+  const [updatePassword, { isSuccess: passwordSuccess, error: passwordError }] =
+    useUpdatePasswordMutation();
+  const [updateAvatar, { isLoading, isSuccess, error }] =
+    useUpdateAvatarMutation();
+  const [
+    deletePicture,
+    { isLoading: deleteLoading, isSuccess: deleteSuccessful },
+  ] = useDeletePictureMutation();
+  const { isLoading: meLoading, refetch } = useLoadUserQuery(undefined);
 
-  const imageHandler = async (e: any) => {
+  const imageHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileReader = new FileReader();
 
-    fileReader.onload = () => {
-      if (fileReader.readyState === 2) {
-        const avatar = fileReader.result;
-        updateAvatar({
-          avatar: avatar,
-        });
-      }
-    };
+    // Check if files exist and are not empty
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedFile = e.target.files[0];
 
-    fileReader.readAsDataURL(e.target.files[0]);
+      // Ensure the selected file is of type Blob
+      if (selectedFile instanceof Blob) {
+        fileReader.onload = () => {
+          if (fileReader.readyState === 2) {
+            const avatar = fileReader.result as string;
+            updateAvatar(avatar);
+          }
+        };
+        // setUploadedFile(file);
+        fileReader.readAsDataURL(selectedFile);
+      } else {
+        console.error("Selected file is not a Blob");
+      }
+    }
+  };
+
+  const handleDeleteButtonClick = () => {
+    deletePicture();
+    // Handle delete logic here, e.g., reset the avatar
   };
 
   useEffect(() => {
-    if (isSuccess) {
-      setLoadUser(true);
+    if (isSuccess || deleteSuccessful) {
+      refetch();
     }
     if (error) {
       console.log(error);
     }
-  }, [error, isSuccess]);
+  }, [isSuccess, deleteSuccessful, error, refetch]);
 
-  const handleSubmit = async (e: any) => {
-    console.log("submit");
+  const passwordChangeHandler = async () => {
+    const passwordRegex = /^.{6,}$/;
+
+    if (!passwordRegex.test(newPassword)) {
+      toast.error("Password should be more than 6 digit");
+    } else {
+      await updatePassword({ oldPassword, newPassword });
+    }
   };
+
+  useEffect(() => {
+    if (passwordSuccess) {
+      toast.success("Password Changed Successfully");
+      setOldPassword("");
+      setNewPassword("");
+      setEntered(1);
+    }
+    if (passwordError) {
+      if ("data" in passwordError) {
+        const errorData = passwordError as any;
+        toast.error(errorData.data.message);
+      }
+    }
+  }, [passwordSuccess, passwordError]);
 
   return (
     <div className="">
       <div className=" w-full flex justify-center">
         <div className=" w-full relative">
-          {/* <div className=" flex flex-col w-full mb-[24px] ">
-            <h2 className=" dark:text-background-foregroundD text-background-foregroundL mb-[12px] text-center text-[22px] leading-[28px] font-semibold">
-              Account Settings
-            </h2>
-            <p className=" text-[15px] text-center leading-[20px] dark:text-background-foregroundD text-background-foregroundL">
-              Set your preferred account details to ensure you always receive a
-              personalized experience with us.
-            </p>
-          </div> */}
-
           {/* profile picture */}
           <div className=" mb-[24px] rounded-[16px] border p-[24px] dark:text-background-foregroundD text-background-foregroundL  w-full  bg-background dark:bg-background-dark bg-opacity-90 dark:border-[#1E1E1E] border-[rgb(232,237,241)]">
             <div className=" w-full">
@@ -66,40 +110,44 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ avatar, user }) => {
               </h3>
             </div>
 
-            <div className=" gap-4 items-center flex flex-col md:flex-row w-full">
-              <div className="">
-                {uploading ? (
-                  // Display a loader while uploading
-                  <p>uploading...</p>
-                ) : uploadedFile ? (
-                  // Display the uploaded image
+            <div className=" gap-4 w-full items-center flex flex-col md:flex-row">
+              {isLoading || deleteLoading || meLoading ? (
+                // Display a loader while uploading
+                <div className=" animate-pulse shrink-0 w-32 h-32 bg-accent dark:bg-background-darkHover rounded-full" />
+              ) : uploadedFile ? (
+                // Display the uploaded image
+                <div className=" shrink-0 w-32 h-32 ">
                   <Image
-                    src={URL.createObjectURL(uploadedFile)}
+                    src={URL.createObjectURL(uploadedFile as unknown as Blob)}
                     width={120}
                     height={120}
-                    className="shrink-0 rounded-full"
+                    className=" object-cover overflow-hidden rounded-full"
                     alt=""
                   />
-                ) : (
-                  // Display user's current profile picture
-                  <>
-                    {user?.avatar && (
+                </div>
+              ) : (
+                // Display user's current profile picture
+                <>
+                  {user?.avatar && user?.avatar?.url ? (
+                    <div className=" shrink-0 w-32 h-32 ">
                       <Image
                         src={user?.avatar?.url}
                         width={120}
                         height={120}
-                        className="shrink-0 rounded-full"
+                        className=" object-cover w-full h-full overflow-hidden rounded-full"
                         alt=""
                       />
-                    )}
-                  </>
-                )}
-                {/* {!uploadError && <p className="text-red-500">{uploadError}</p>} */}
-              </div>
+                    </div>
+                  ) : (
+                    <PiUserCircleFill className="cursor-pointer h-28 w-28 dark:text-background-foregroundD text-background-foregroundL " />
+                  )}
+                </>
+              )}
+
               <div className=" w-full ">
                 <p className=" text-[15px] mb-[12px] text-center md:text-left leading-[20px]">
-                  Brighten up your profile with a favorite photo or avatar. 1 MB
-                  maximum file size
+                  Brighten up your profile with a favorite photo or avatar. 10
+                  MB maximum file size
                 </p>
                 <div className=" hidden md:flex mb-[12px] ">
                   <div className=" gap-[8px] flex items-start w-full">
@@ -122,7 +170,10 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ avatar, user }) => {
                         </div>
                       </label>
                     </div>
-                    <div className=" cursor-pointer w-auto ">
+                    <div
+                      onClick={handleDeleteButtonClick}
+                      className=" cursor-pointer w-auto "
+                    >
                       <button>
                         <div className=" h-[44px] rounded-[3px] px-4 inline-flex justify-between items-center text-center max-w-full shadow bg-[rgb(250,234,234)] mb-[24px] w-auto text-[15px] font-medium ">
                           <div className=" align-middle h-full flex justify-between items-center">
@@ -157,7 +208,10 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ avatar, user }) => {
                       </div>
                     </label>
                   </div>
-                  <div className=" cursor-pointer w-full ">
+                  <div
+                    onClick={handleDeleteButtonClick}
+                    className=" cursor-pointer w-full "
+                  >
                     <button className="w-full">
                       <div className=" h-[44px] rounded-[3px] px-4 inline-flex justify-center items-center text-center max-w-full shadow bg-[rgb(250,234,234)] mb-[24px] w-full text-[15px] font-medium ">
                         <div className=" align-middle h-full flex justify-between items-center">
@@ -171,6 +225,14 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ avatar, user }) => {
                 </div>
               </div>
             </div>
+            {error && (
+              <div className="text-red-800 mt-2 text-sm">
+                <div className="bg-[rgb(250,234,234)] px-4 py-1 rounded-xl max-w-max">
+                  {/* @ts-ignore */}
+                  <p>{error?.data?.message}</p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* change Password */}
@@ -181,31 +243,122 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ avatar, user }) => {
                   Change Password
                 </h3>
               </div>
-              <div className=" gap-3 block md:flex items-center ">
-                <div className=" flex flex-1 w-full">
-                  <div className=" rounded-[8px] flex w-full items-center justify-between relative h-[44px] border dark:border-[#1E1E1E] border-[rgb(232,237,241)] text-[rgb(79,94,113)] cursor-not-allowed  ">
-                    <input
-                      className=" w-full rounded-[8px] px-[12px] h-full dark:bg-background-darkHover "
-                      placeholder={
-                        user?.email && user.email.length > 10
-                          ? `${user.email.slice(0, 16)}...`
-                          : user?.email
-                      }
-                    />
+              {entered === 1 && (
+                <div className=" gap-3 block md:flex items-center ">
+                  <div className=" flex flex-1 w-full">
+                    <div className=" rounded-md flex w-full items-center justify-between relative h-[44px] dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] text-[rgb(79,94,113)] shadow-sm ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 cursor-not-allowed  ">
+                      <span className="flex select-none items-center px-3 dark:text-background-foregroundD text-gray-900">
+                        <BiSolidLockAlt className=" h-5 w-5" />
+                      </span>
+
+                      <input
+                        className=" w-full rounded-[8px] bg-transparent px-[12px] h-full block flex-1 border-0 py-1.5 pl-1 text-gray-900 dark:text-white outline-none  placeholder:text-gray-400 focus:ring-0 sm:leading-6  "
+                        placeholder="Old Password"
+                        value={oldPassword}
+                        onChange={(e) => setOldPassword(e.target.value)}
+                        id="oldPassword"
+                        required
+                        type={!show ? "password" : "text"}
+                      />
+                      {!show ? (
+                        <span
+                          onClick={() => setShow(true)}
+                          className="flex cursor-pointer dark:text-background-foregroundD select-none items-center px-3 text-gray-900"
+                        >
+                          <FaEye className=" h-5 w-5" />
+                        </span>
+                      ) : (
+                        <span
+                          onClick={() => setShow(false)}
+                          className="flex select-none dark:text-background-foregroundD cursor-pointer items-center px-3 text-gray-900"
+                        >
+                          <FaEyeSlash className=" h-5 w-5" />
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <button className=" cursor-pointer mt-3 md:mt-0 w-full md:w-auto ">
-                  <button className="w-full">
-                    <div className=" w-full h-[44px] rounded-[3px] px-4 inline-flex justify-center items-center text-center max-w-full bg-[rgb(245,247,249)] shadow  text-[15px] font-medium ">
-                      <div className=" align-middle h-full flex justify-between items-center">
-                        <div className=" text-black flex items-center">
-                          Add Password
+                  <button
+                    onClick={() => setEntered(2)}
+                    className=" cursor-pointer mt-3 md:mt-0 w-full md:w-auto "
+                  >
+                    <div className="w-full">
+                      <div className=" w-full h-[44px] rounded-[3px] px-4 inline-flex justify-center items-center text-center max-w-full bg-[rgb(245,247,249)] shadow  text-[15px] font-medium ">
+                        <div className=" align-middle h-full flex justify-between items-center">
+                          <div className=" text-black flex items-center">
+                            Next
+                          </div>
                         </div>
                       </div>
                     </div>
                   </button>
-                </button>
-              </div>
+                </div>
+              )}
+
+              {entered === 2 && (
+                <div className=" mt-3 gap-3 block md:flex items-center ">
+                  <div className=" flex flex-1 w-full">
+                    <div className=" rounded-md flex w-full items-center justify-between relative h-[44px] dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] text-[rgb(79,94,113)] shadow-sm ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 cursor-not-allowed  ">
+                      <span className="flex select-none items-center px-3 dark:text-background-foregroundD text-gray-900">
+                        <BiSolidLockAlt className=" h-5 w-5" />
+                      </span>
+
+                      <input
+                        className=" w-full rounded-[8px] bg-transparent px-[12px] h-full block flex-1 border-0 py-1.5 pl-1 text-gray-900 dark:text-white outline-none  placeholder:text-gray-400 focus:ring-0 sm:leading-6  "
+                        placeholder="New Password"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        id="newPassword"
+                        required
+                        type={!show ? "password" : "text"}
+                      />
+                      {!show ? (
+                        <span
+                          onClick={() => setShow(true)}
+                          className="flex cursor-pointer dark:text-background-foregroundD select-none items-center px-3 text-gray-900"
+                        >
+                          <FaEye className=" h-5 w-5" />
+                        </span>
+                      ) : (
+                        <span
+                          onClick={() => setShow(false)}
+                          className="flex select-none dark:text-background-foregroundD cursor-pointer items-center px-3 text-gray-900"
+                        >
+                          <FaEyeSlash className=" h-5 w-5" />
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setEntered(1)}
+                    className=" cursor-pointer mt-3 md:mt-0 w-full md:w-auto "
+                  >
+                    <div className="w-full">
+                      <div className=" w-full h-[44px] rounded-[3px] px-4 inline-flex justify-center items-center text-center max-w-full bg-[rgb(245,247,249)]/60 shadow  text-[15px] font-medium ">
+                        <div className=" align-middle h-full flex justify-between items-center">
+                          <div className=" text-black flex items-center">
+                            Back
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    onClick={passwordChangeHandler}
+                    className=" cursor-pointer mt-3 md:mt-0 w-full md:w-auto "
+                  >
+                    <div className="w-full">
+                      <div className=" w-full h-[44px] rounded-[3px] px-4 inline-flex justify-center items-center text-center max-w-full bg-[rgb(245,247,249)] shadow  text-[15px] font-medium ">
+                        <div className=" align-middle h-full flex justify-between items-center">
+                          <div className=" text-black flex items-center">
+                            Change
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -227,7 +380,10 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ avatar, user }) => {
                   </p>
                 </div>
 
-                <div className=" cursor-pointer mt-3 md:mt-0 w-full md:w-auto ">
+                <div
+                  onClick={() => setOpen(true)}
+                  className=" cursor-pointer mt-3 md:mt-0 w-full md:w-auto "
+                >
                   <button className="w-full" type="button">
                     <div className=" w-full h-[44px] rounded-[3px] px-4 inline-flex justify-center items-center text-center max-w-full bg-[rgb(245,247,249)] shadow mb-[24px]  text-[15px] font-medium ">
                       <div className=" align-middle h-full flex justify-between items-center">
@@ -294,6 +450,13 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ avatar, user }) => {
             </div>
           </div>
         </div>
+        {open && (
+          <PersonalDetail
+            setOpen={setOpen}
+            email={user?.email}
+            name={user?.name}
+          />
+        )}
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import express from "express";
 import { catchAsyncError } from "../middleware/catchAsyncErrors";
 import {
   activateUser,
+  deletePicture,
   deleteUser,
   getAllUsers,
   getUserInfo,
@@ -58,6 +59,13 @@ router.put(
   "/update-user-avatar",
   isAuthenticated,
   catchAsyncError(updatePicture)
+);
+
+// Update user Avatar
+router.delete(
+  "/delete-user-avatar",
+  isAuthenticated,
+  catchAsyncError(deletePicture)
 );
 
 // Get all users

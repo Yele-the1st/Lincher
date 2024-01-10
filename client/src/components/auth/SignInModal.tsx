@@ -114,7 +114,7 @@ const SignInModal: FC<SignInModalProps> = ({ scroll, setOpen, setRoute }) => {
                     } flex rounded-md h-[44px] shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600`}
                   >
                     <span className="flex select-none items-center px-3 dark:text-background-foregroundD text-gray-900">
-                      <BsEnvelopeFill className=" h-6 w-6" />
+                      <BsEnvelopeFill className=" h-5 w-5" />
                     </span>
                     <input
                       type="email"
@@ -142,7 +142,7 @@ const SignInModal: FC<SignInModalProps> = ({ scroll, setOpen, setRoute }) => {
                     } flex rounded-md h-[44px] shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600`}
                   >
                     <span className="flex select-none items-center px-3 dark:text-background-foregroundD text-gray-900">
-                      <BiSolidLockAlt className=" h-6 w-6" />
+                      <BiSolidLockAlt className=" h-5 w-5" />
                     </span>
                     <input
                       type={!show ? "password" : "text"}
@@ -158,14 +158,14 @@ const SignInModal: FC<SignInModalProps> = ({ scroll, setOpen, setRoute }) => {
                         onClick={() => setShow(true)}
                         className="flex cursor-pointer select-none items-center px-3 dark:text-background-foregroundD text-gray-900"
                       >
-                        <FaEye className=" h-6 w-6" />
+                        <FaEye className=" h-5 w-5" />
                       </span>
                     ) : (
                       <span
                         onClick={() => setShow(false)}
                         className="flex select-none cursor-pointer items-center px-3 dark:text-background-foregroundD text-gray-900"
                       >
-                        <FaEyeSlash className=" h-6 w-6" />
+                        <FaEyeSlash className=" h-5 w-5" />
                       </span>
                     )}
                   </div>

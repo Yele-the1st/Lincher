@@ -11,7 +11,7 @@ interface pageProps {}
 
 const Page: FC<pageProps> = ({}) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [activeItem, setActiveItem] = useState(0);
+  const [activeItem, setActiveItem] = useState(5);
   const [route, setRoute] = useState("Auth");
   const { user } = useSelector((state: any) => state.auth);
 

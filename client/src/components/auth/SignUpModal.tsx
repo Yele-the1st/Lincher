@@ -120,7 +120,7 @@ const SignUpModal: FC<SignUpModalProps> = ({ scroll, setOpen, setRoute }) => {
                     } flex rounded-md h-[44px] shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600`}
                   >
                     <span className="flex select-none items-center px-3 dark:text-background-foregroundD text-gray-900">
-                      <BsFillPersonFill classname=" h-6 w-6" />
+                      <BsFillPersonFill className=" h-5 w-5" />
                     </span>
                     <input
                       type="text"
@@ -151,7 +151,7 @@ const SignUpModal: FC<SignUpModalProps> = ({ scroll, setOpen, setRoute }) => {
                     } flex rounded-md h-[44px] shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600`}
                   >
                     <span className="flex select-none items-center px-3 dark:text-background-foregroundD text-gray-900">
-                      <BsEnvelopeFill classname=" h-6 w-6" />
+                      <BsEnvelopeFill className=" h-5 w-5" />
                     </span>
                     <input
                       type="email"
@@ -180,7 +180,7 @@ const SignUpModal: FC<SignUpModalProps> = ({ scroll, setOpen, setRoute }) => {
                     } flex rounded-md h-[44px] shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600`}
                   >
                     <span className="flex select-none items-center px-3 dark:text-background-foregroundD text-gray-900">
-                      <BiSolidLockAlt classname=" h-6 w-6" />
+                      <BiSolidLockAlt className=" h-5 w-5" />
                     </span>
                     <input
                       type={!show ? "password" : "text"}
@@ -196,14 +196,14 @@ const SignUpModal: FC<SignUpModalProps> = ({ scroll, setOpen, setRoute }) => {
                         onClick={() => setShow(true)}
                         className="flex cursor-pointer dark:text-background-foregroundD select-none items-center px-3 text-gray-900"
                       >
-                        <FaEye classname=" h-6 w-6" />
+                        <FaEye className=" h-5 w-5" />
                       </span>
                     ) : (
                       <span
                         onClick={() => setShow(false)}
                         className="flex select-none dark:text-background-foregroundD cursor-pointer items-center px-3 text-gray-900"
                       >
-                        <FaEyeSlash classname=" h-6 w-6" />
+                        <FaEyeSlash className=" h-5 w-5" />
                       </span>
                     )}
                   </div>
