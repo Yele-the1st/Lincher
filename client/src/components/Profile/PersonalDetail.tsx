@@ -5,7 +5,7 @@ import { useEditProfileMutation } from "@/redux/features/user/userApi";
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { BsEnvelopeFill, BsFillPersonFill } from "react-icons/bs";
+import { BsFillPersonFill } from "react-icons/bs";
 
 interface PersonalDetailProps {
   setOpen: (open: boolean) => void;
@@ -108,13 +108,13 @@ const PersonalDetail: FC<PersonalDetailProps> = ({ setOpen, name, email }) => {
             <div className=" p-6 text-sm flex justify-center gap-2">
               <button
                 onClick={() => setOpen(false)}
-                className=" w-full px-[16px] pb-[1px] shadow-md bg-accent dark:bg-[rgba(255,255,255,.03)]  rounded-[8px] h-[32px] text-background-foregroundL  dark:text-[rgba(255,255,255,.4)] leading-4 whitespace-nowrap "
+                className=" h-[44px] rounded-[3px] px-4  w-full  pb-[1px] shadow-md bg-accent dark:bg-[rgba(255,255,255,.03)] text-background-foregroundL  dark:text-[rgba(255,255,255,.4)] leading-4 whitespace-nowrap "
               >
                 Cancel
               </button>
               <button
                 onClick={handleSubmit}
-                className="  w-full px-[16px] pb-[1px] bg-primary-dark shadow-2xl rounded-[8px] h-[32px] text-white leading-4 whitespace-nowrap"
+                className=" h-[44px] rounded-[3px] px-4  w-full pb-[1px] bg-primary-dark shadow-2xl text-white leading-4 whitespace-nowrap"
               >
                 Update
               </button>

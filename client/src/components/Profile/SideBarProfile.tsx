@@ -4,8 +4,9 @@ import { PiUserCircleFill } from "react-icons/pi";
 import { FaFilePen } from "react-icons/fa6";
 import { MdLibraryBooks } from "react-icons/md";
 import { FaMedal } from "react-icons/fa";
-import { FaUserPen } from "react-icons/fa6";
 import { IoLogOut } from "react-icons/io5";
+import { MdSpaceDashboard } from "react-icons/md";
+import Link from "next/link";
 
 interface SideBarProfileProps {
   user: any;
@@ -109,29 +110,31 @@ const SideBarProfile: FC<SideBarProfileProps> = ({
           </div>
         </div>
         <h5 className=" pl-2 800px:block hidden text-sm font-Poppins dark:text-background-foregroundD text-background-foregroundL ">
-          Hall of fame
+          Certifications
         </h5>
       </div>
-      {/* <div
-        onClick={() => setActive(5)}
-        className={`w-full flex items-center px-3 py-4 cursor-pointer ${
-          active === 5
-            ? " dark:bg-background-darkHover bg-accent "
-            : "bg-transparent"
-        }`}
-      >
-        <div className={`w-8 h-8 flex rounded-md shrink-0`}>
-          <div className=" w-full flex items-center justify-center">
-            <FaUserPen
-              size={22}
-              className="cursor-pointer dark:text-background-foregroundD text-background-foregroundL "
-            />
+      {user.role === "admin" && (
+        <Link
+          href={`/admin`}
+          className={`w-full flex items-center px-3 py-4 cursor-pointer ${
+            active === 5
+              ? " dark:bg-background-darkHover bg-accent "
+              : "bg-transparent"
+          }`}
+        >
+          <div className={`w-8 h-8 flex rounded-md shrink-0`}>
+            <div className=" w-full flex items-center justify-center">
+              <MdSpaceDashboard
+                size={22}
+                className="cursor-pointer dark:text-background-foregroundD text-background-foregroundL "
+              />
+            </div>
           </div>
-        </div>
-        <h5 className=" pl-2 800px:block hidden text-sm font-Poppins dark:text-background-foregroundD text-background-foregroundL ">
-          Change Password
-        </h5>
-      </div> */}
+          <h5 className=" pl-2 800px:block hidden text-sm font-Poppins dark:text-background-foregroundD text-background-foregroundL ">
+            Admin Dashboard
+          </h5>
+        </Link>
+      )}
       <div
         onClick={() => logOutHandler()}
         className={`w-full flex items-center px-3 py-4 cursor-pointer ${

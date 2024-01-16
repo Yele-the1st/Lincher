@@ -1,6 +1,6 @@
 "use client";
 
-import Protected from "@/hooks/useProtected";
+import UserProtected from "@/hooks/userProtected";
 
 export default function RootLayout({
   children,
@@ -9,7 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <div className=" min-h-screen bg-[#F4F7F9] dark:bg-background-dark">
-      <Protected>{children}</Protected>
+      <UserProtected>{children}</UserProtected>
     </div>
   );
 }

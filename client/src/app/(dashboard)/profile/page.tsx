@@ -18,7 +18,7 @@ const Page: FC<pageProps> = ({}) => {
   return (
     <div>
       <Heading
-        title={`${user?.name} profile`}
+        title={`${user?.name} profile - Lincher`}
         description="Lincher is a platform for student to learn and get help from teachers"
         keywords="Programming, courses, Machine Learning"
       />
