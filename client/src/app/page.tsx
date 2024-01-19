@@ -1,4 +1,5 @@
 "use client";
+
 import Header from "@/components/Navigation/Header";
 import Hero from "@/components/Hero/Hero";
 import Heading from "@/utils/Heading";

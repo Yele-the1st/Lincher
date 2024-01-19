@@ -1,8 +1,8 @@
 "use client";
 
 import AdminSidebar from "@/components/admin/AdminSidebar";
-import CreateCourse from "@/components/admin/course/CreateCourse";
 import DashboardHero from "@/components/admin/DashboardHero";
+import AllCourses from "@/components/admin/course/AllCourses";
 import AdminProtected from "@/hooks/adminProtected";
 import Heading from "@/utils/Heading";
 import { FC } from "react";
@@ -20,10 +20,11 @@ const page: FC<pageProps> = ({}) => {
         />
         <div className=" flex h-screen">
           <div className=" ">
-            <AdminSidebar selectedT={0} activeT={0} header={"Dashboard"} />
+            <AdminSidebar activeT={2} selectedT={4} header={"Live Courses"} />
           </div>
           <div className="">
             <DashboardHero />
+            <AllCourses />
           </div>
         </div>
       </AdminProtected>

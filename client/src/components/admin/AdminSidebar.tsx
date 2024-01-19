@@ -31,15 +31,23 @@ import { ThemeToogle } from "../Navigation/ThemeToogle";
 import Notification from "./DashboardHeader";
 import DashboardHeader from "./DashboardHeader";
 
-interface AdminSidebarProps {}
+interface AdminSidebarProps {
+  activeT: number;
+  selectedT: number;
+  header: string;
+}
 
-const AdminSidebar: FC<AdminSidebarProps> = ({}) => {
+const AdminSidebar: FC<AdminSidebarProps> = ({
+  activeT,
+  selectedT,
+  header,
+}) => {
   const [asideIsShown, setAsideIsShown] = useState(true);
   const { user } = useSelector((state: any) => state.auth);
   const [open, setOpen] = useState(false);
 
-  const [activeTab, setActiveTab] = useState(0);
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(activeT);
+  const [selectedTab, setSelectedTab] = useState(selectedT);
 
   const toggleTab = (tab: SetStateAction<number>) => {
     if (activeTab === tab) {
@@ -48,6 +56,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({}) => {
       setActiveTab(tab);
     }
   };
+  // https://www.youtube.com/embed/W6NZfCO5SIk?si=VLqpHKgCQdW2C1XS
 
   const asideHandler = () => {
     setAsideIsShown(true);
@@ -56,7 +65,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({}) => {
     }
   };
   return (
-    <div className=" overflow-hidden w-ful  text-background-foregroundL dark:text-background-foregroundD">
+    <div className=" overflow-hidden w-full  text-background-foregroundL dark:text-background-foregroundD">
       <nav className="fixed top-0 z-50 w-full overflow-hidden bg-background dark:bg-background-dark   flex items-center justify-between ">
         <div className=" w-full sm:w-64 shadow-none  border-r border-b  border-gray-200 dark:border-[#3C4043] bg-accent dark:bg-background-darkHover px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
@@ -64,7 +73,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({}) => {
               <button
                 onClick={asideHandler}
                 type="button"
-                className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden dark:hover:bg-accent-hover  focus:outline-none focus:ring-2 focus:ring-gray-200 "
+                className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden dark:hover:bg-accent-hover  focus:outline-none focus:ring-2 dark:focus:ring-accent-hover/80 focus:ring-accent-hover/10"
               >
                 <span className="sr-only">Open sidebar</span>
                 <IoMenu className={`w-6 h-6`} />
@@ -124,9 +133,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({}) => {
           </div>
         </div>
         <div className=" hidden shadow-m flex-1 sm:flex px-7 py-3 lg:px-7  ">
-          <div className=" flex items-center text-3xl font-bold ">
-            Create Courses
-          </div>
+          <div className=" flex items-center text-3xl font-bold ">{header}</div>
         </div>
       </nav>
 
@@ -241,20 +248,20 @@ const AdminSidebar: FC<AdminSidebarProps> = ({}) => {
                       Create Courses
                     </span>
                   </Link>
-                  <div
-                    onClick={() => setSelectedTab(1)}
+                  <Link
+                    href={`/admin/courses`}
+                    // onClick={() => setSelectedTab(1)}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[16px] ${
-                      selectedTab === 1
+                      selectedTab === 4
                         ? " bg-primary"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
                   >
-                    {" "}
                     <IoVideocam className={` w-6 h-6 transition duration-75`} />
                     <span className="ml-3 font-poppins transition duration-75">
                       Live Courses
                     </span>
-                  </div>
+                  </Link>
                 </div>
               )}
             </li>
@@ -433,7 +440,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({}) => {
 
             <div className="max-w-sm p-4 bg-background dark:bg-accent-hover rounded-lg shadow  ">
               <div className=" bg-[#F0F5F8] p-0.5 max-w-fit mb-2 rounded-md">
-                <MdAddBox className={` text-[#660080] w-8 h-8`} />
+                <MdAddBox className={` text-primary w-8 h-8`} />
               </div>
 
               <h5 className="mb-2 text-xl font-semibold tracking-tight dark:text-gray-100  ">

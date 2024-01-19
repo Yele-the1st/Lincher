@@ -14,11 +14,13 @@ import {
   getSingleCourse,
   uploadCourse,
 } from "../controllers/course.controller";
+import { updateAccessToken } from "../controllers/user.controller";
 const router = express.Router();
 
 //Create a course
 router.post(
   "/create-course",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   catchAsyncError(uploadCourse)
@@ -27,6 +29,7 @@ router.post(
 //Edit a course
 router.put(
   "/edit-course/:id",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   catchAsyncError(editCourse)
@@ -41,22 +44,39 @@ router.get("/get-courses", catchAsyncError(getAllCourses));
 //get a course by purchase
 router.get(
   "/get-course-content/:id",
+  updateAccessToken,
   isAuthenticated,
   catchAsyncError(getCourseByUser)
 );
 
 //add question
-router.put("/add-question", isAuthenticated, catchAsyncError(addQuestion));
+router.put(
+  "/add-question",
+  updateAccessToken,
+  isAuthenticated,
+  catchAsyncError(addQuestion)
+);
 
 //add answer
-router.put("/add-answer", isAuthenticated, catchAsyncError(addAnswer));
+router.put(
+  "/add-answer",
+  updateAccessToken,
+  isAuthenticated,
+  catchAsyncError(addAnswer)
+);
 
 //add review
-router.put("/add-review/:id", isAuthenticated, catchAsyncError(addReview));
+router.put(
+  "/add-review/:id",
+  updateAccessToken,
+  isAuthenticated,
+  catchAsyncError(addReview)
+);
 
 //add review
 router.put(
   "/add-review-reply",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   catchAsyncError(addReplyReview)
@@ -65,6 +85,7 @@ router.put(
 //Get all courses content
 router.get(
   "/get-all-courses",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   catchAsyncError(getAllCoursesContent)
@@ -73,6 +94,7 @@ router.get(
 // Get all users
 router.delete(
   "/delete-course/:id",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   catchAsyncError(deleteCourse)

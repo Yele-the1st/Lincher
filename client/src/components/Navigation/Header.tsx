@@ -97,10 +97,14 @@ const Header: FC<HeaderProps> = ({
         style={{ width: `${scrollWidth}`, minWidth: "360px" }}
         className=" h-16 backdrop-blur-md bg-background/75 dark:bg-background-darkHover dark:border-[#1E1E1E] border text-background-foregroundL dark:text-background-foregroundD rounded-[16px] shadow-2xl pl-6 pr-3 flex items-center relative"
       >
-        <Link href={`/`} className=" mr-6 max-w-full flex items-baseline">
-          <Image src={`/logo/path1117.svg`} alt="logo" height={20} width={20} />
-          <p className=" ml-1 font-Josefin text-xl">lincher</p>
+        <Link
+          href={`/`}
+          className="mr-6 max-w-full flex items-baseline cursor-pointer"
+        >
+          <Image src="/logo/path1117.png" alt="logo" height={20} width={20} />
+          <div className="ml-1 font-Josefin text-xl">lincher</div>
         </Link>
+
         <div className=" w-full justify-end 1100px:justify-between  items-center flex">
           <NavItems activeItem={activeItem} isMobile={false} />
 

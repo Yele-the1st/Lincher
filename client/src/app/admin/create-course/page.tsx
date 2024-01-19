@@ -16,11 +16,11 @@ const page: FC<pageProps> = ({}) => {
         description="Elearning is a platform for students to learn and get help from teachers "
         keywords="Programing, MERN, Redux, Machine Learning"
       />
-      <div className="flex">
+      <div className="flex h-screen">
         <div className=" ">
-          <AdminSidebar />
+          <AdminSidebar selectedT={3} activeT={2} header={"Create Courses"} />
         </div>
-        <div className="w-full ">
+        <div className="w-full min-h-screen ">
           <DashboardHeader />
           <CreateCourse />
         </div>

@@ -18,6 +18,19 @@ const CourseInformation: FC<CourseInformationProps> = ({
 }) => {
   const [dragging, setDragging] = useState(false);
 
+  const [selectedOption, setSelectedOption] = useState("youtube");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleSelectChange = (event: any) => {
+    event.preventDefault();
+    setCourseInfo({ ...courseInfo, type: event.target.value });
+    setIsDropdownOpen(false);
+  };
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setActive(active + 1);
@@ -119,8 +132,9 @@ const CourseInformation: FC<CourseInformationProps> = ({
             </div>
           </div>
         </div>
+
         <div className=" w-full flex justify-between mt-5">
-          <div className=" w-[45%]">
+          <div className=" w-[48%] sm:w-[45%]">
             <label
               htmlFor=""
               className={`text-sm block w-full font-medium leading-6 font-Poppins text-black dark:text-white`}
@@ -148,12 +162,12 @@ const CourseInformation: FC<CourseInformationProps> = ({
               </div>
             </div>
           </div>
-          <div className=" w-[45%]">
+          <div className=" w-[48%] sm:w-[45%]">
             <label
               htmlFor=""
               className={`text-sm block w-full font-medium leading-6 font-Poppins text-black dark:text-white`}
             >
-              Estimated Price (Optional)
+              Estimated Price
             </label>
             <div className=" flex flex-1 w-full mt-2 mb-6">
               <div className=" rounded-md flex w-full items-center justify-between relative h-[44px] dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] text-[rgb(79,94,113)] shadow-sm ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 cursor-not-allowed  ">
@@ -207,8 +221,40 @@ const CourseInformation: FC<CourseInformationProps> = ({
             </div>
           </div>
         </div>
+
+        <div className="">
+          <label
+            htmlFor=""
+            className={`text-sm block w-full font-medium leading-6 font-Poppins text-black dark:text-white`}
+          >
+            Demo Url
+          </label>
+          <div className=" flex flex-1 w-full mt-2 mb-6">
+            <div className=" rounded-md flex w-full items-center justify-between relative h-[44px] dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] text-[rgb(79,94,113)] shadow-sm ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 cursor-not-allowed  ">
+              <span className="flex select-none items-center px-3 dark:text-background-foregroundD text-gray-900">
+                <MdDriveFileRenameOutline className=" h-5 w-5" />
+              </span>
+
+              <input
+                className=" w-full rounded-[8px] bg-transparent px-[12px] h-full block flex-1 border-0 py-1.5 pl-1 text-gray-900 dark:text-white outline-none  placeholder:text-gray-400 focus:ring-0 sm:leading-6  "
+                type="text"
+                name=""
+                required
+                value={courseInfo.demoUrl}
+                onChange={(e: any) =>
+                  setCourseInfo({
+                    ...courseInfo,
+                    demoUrl: e.target.value,
+                  })
+                }
+                id="demoUrl"
+                placeholder="eerd9wi"
+              />
+            </div>
+          </div>
+        </div>
         <div className=" w-full flex justify-between mt-5">
-          <div className=" w-[45%]">
+          <div className=" w-[48%] sm:w-[45%]">
             <label
               htmlFor=""
               className={`text-sm block w-full font-medium leading-6 font-Poppins text-black dark:text-white`}
@@ -236,36 +282,56 @@ const CourseInformation: FC<CourseInformationProps> = ({
               </div>
             </div>
           </div>
-          <div className=" w-[45%]">
+
+          <div className="w-[48%] sm:w-[45%] relative">
             <label
               htmlFor=""
               className={`text-sm block w-full font-medium leading-6 font-Poppins text-black dark:text-white`}
             >
-              Demo Url
+              Course Type
             </label>
-            <div className=" flex flex-1 w-full mt-2 mb-6">
-              <div className=" rounded-md flex w-full items-center justify-between relative h-[44px] dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] text-[rgb(79,94,113)] shadow-sm ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 cursor-not-allowed  ">
-                <span className="flex select-none items-center px-3 dark:text-background-foregroundD text-gray-900">
-                  <MdDriveFileRenameOutline className=" h-5 w-5" />
-                </span>
-
-                <input
-                  className=" w-full rounded-[8px] bg-transparent px-[12px] h-full block flex-1 border-0 py-1.5 pl-1 text-gray-900 dark:text-white outline-none  placeholder:text-gray-400 focus:ring-0 sm:leading-6  "
-                  type="text"
-                  name=""
-                  required
-                  value={courseInfo.demoUrl}
-                  onChange={(e: any) =>
-                    setCourseInfo({
-                      ...courseInfo,
-                      demoUrl: e.target.value,
-                    })
-                  }
-                  id="demoUrl"
-                  placeholder="eerd9wi"
-                />
-              </div>
+            <div className=" mt-2">
+              <span className="rounded-md shadow-sm">
+                <button
+                  onClick={toggleDropdown}
+                  type="button"
+                  className="rounded-md flex w-full items-center text-gray-900 dark:text-white justify-center relative h-[44px] dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] shadow-sm ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 cursor-not-allowed  "
+                  id="options-menu"
+                  aria-haspopup="true"
+                  aria-expanded={isDropdownOpen ? "true" : "false"}
+                >
+                  {courseInfo.type === "youtube" ? "YouTube" : "Personal"}
+                </button>
+              </span>
             </div>
+
+            {isDropdownOpen && (
+              <div
+                className="origin-top-right z-20 absolute right-0 text-gray-900 dark:text-white mt-2 w-56 rounded-md shadow-lg dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] bg-white "
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="options-menu"
+              >
+                <div className="py-1" role="none">
+                  <button
+                    onClick={handleSelectChange}
+                    value="youtube"
+                    className="block px-4 py-2 text-sm  w-full text-left"
+                    role="menuitem"
+                  >
+                    YouTube
+                  </button>
+                  <button
+                    onClick={handleSelectChange}
+                    value="personal"
+                    className="block px-4 py-2 text-sm  w-full text-left"
+                    role="menuitem"
+                  >
+                    Personal
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className=" w-full">
