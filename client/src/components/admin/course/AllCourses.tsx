@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { DataGrid } from "mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 
 interface AllCoursesProps {}
 
