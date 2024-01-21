@@ -4,6 +4,7 @@ import {
   activateUser,
   deletePicture,
   deleteUser,
+  getAllAdminUsers,
   getAllUsers,
   getUserInfo,
   loginUser,
@@ -89,6 +90,15 @@ router.get(
   isAuthenticated,
   authorizeRoles("admin"),
   catchAsyncError(getAllUsers)
+);
+
+// Get all admin users
+router.get(
+  "/get-all-admin-users",
+  updateAccessToken,
+  isAuthenticated,
+  authorizeRoles("admin"),
+  catchAsyncError(getAllAdminUsers)
 );
 
 // update user role

@@ -1,42 +1,51 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button } from "@mui/material";
 import { BsTrash3Fill } from "react-icons/bs";
 import { useTheme } from "next-themes";
-import { FaEdit } from "react-icons/fa";
-import { useGetAllCoursesQuery } from "@/redux/features/courses/coursesApi";
+import { FaEnvelope } from "react-icons/fa";
 import Loader from "@/components/Loader/Loader";
-import { timeAgo } from "@/utils/TimeAgo";
+import { openURLInNewTab, timeAgo } from "@/utils/TimeAgo";
+import { useGetAllAdminUsersQuery } from "@/redux/features/user/userApi";
+import UpdateRole from "./UpdateRole";
 
-interface AllCoursesProps {}
+interface AllTeamsProps {}
 
-const AllCourses: FC<AllCoursesProps> = ({}) => {
+const AllTeams: FC<AllTeamsProps> = ({}) => {
   const { theme, setTheme } = useTheme();
+  const [active, setActive] = useState(false);
 
-  const { isLoading, data, error } = useGetAllCoursesQuery({});
+  const { isLoading, data, error } = useGetAllAdminUsersQuery({});
 
   const columns = [
     { field: "id", headerName: "ID", width: 110 },
-    { field: "title", headerName: "Course Title", width: 300 },
-    { field: "ratings", headerName: "Ratings", width: 150 },
-    { field: "purchased", headerName: "Purchased", width: 150 },
-    { field: "created_at", headerName: "Created At", width: 180 },
+    { field: "name", headerName: "Name", width: 160 },
+    { field: "email", headerName: "Email", width: 200 },
+    { field: "role", headerName: "Role", width: 110 },
+    { field: "courses", headerName: "Purchased Courses", width: 150 },
+    { field: "created_at", headerName: "Joined At", width: 150 },
+
     {
       field: "",
-      headerName: "Edit",
+      headerName: "Email",
       width: 110,
-
       renderCell: (params: any) => {
         return (
           <>
-            <Button sx={{ display: "flex", justifyContent: "left" }}>
-              <FaEdit size={20} className="dark:text-white text-black" />
-            </Button>
+            {/* <Button
+              onClick={() => openURLInNewTab(`mailto:${params?.row.email}`)}
+            >
+              <FaEnvelope size={20} className="dark:text-white text-black" />
+            </Button> */}
+            <a href={`mailto:${params?.row.email}`}>
+              <Button sx={{ display: "flex", justifyContent: "left" }}>
+                <FaEnvelope size={20} className="dark:text-white text-black" />
+              </Button>
+            </a>
           </>
         );
       },
     },
-
     {
       field: "  ",
       headerName: "Delete",
@@ -57,13 +66,14 @@ const AllCourses: FC<AllCoursesProps> = ({}) => {
 
   {
     data &&
-      data.courses.forEach((item: any) => {
+      data.users.forEach((item: any) => {
         rows.push({
-          id: item._id,
-          title: item.name,
-          ratings: item.ratings,
-          purchased: item.purchased,
-          created_at: timeAgo(item.createdAt),
+          id: item?._id,
+          name: item?.name,
+          email: item?.email,
+          role: item?.role,
+          courses: item?.courses?.length,
+          created_at: timeAgo(item?.createdAt),
         });
       });
   }
@@ -74,8 +84,16 @@ const AllCourses: FC<AllCoursesProps> = ({}) => {
         <Loader />
       ) : (
         <Box m="20px">
+          <div className=" w-full flex justify-end">
+            <div
+              onClick={() => setActive(!active)}
+              className=" w-full 800px:w-[180px] flex items-center justify-center h-[44px] text-center text-white bg-primary rounded-[3px] cursor-pointer "
+            >
+              Add New Member
+            </div>
+          </div>
           <Box
-            m="40px 0 0 0"
+            m="30px 0 0 0"
             height="80vh"
             sx={{
               "& .MuiDataGrid-root": {
@@ -127,10 +145,11 @@ const AllCourses: FC<AllCoursesProps> = ({}) => {
           >
             <DataGrid checkboxSelection rows={rows} columns={columns} />
           </Box>
+          {active && <UpdateRole setActive={setActive} />}
         </Box>
       )}
     </div>
   );
 };
 
-export default AllCourses;
+export default AllTeams;

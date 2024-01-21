@@ -2,7 +2,7 @@
 
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import DashboardHero from "@/components/admin/DashboardHero";
-import AllCourses from "@/components/admin/course/AllCourses";
+import AllUsers from "@/components/admin/users/AllUsers";
 import AdminProtected from "@/hooks/adminProtected";
 import Heading from "@/utils/Heading";
 import { FC } from "react";
@@ -20,11 +20,11 @@ const page: FC<pageProps> = ({}) => {
         />
         <div className=" flex h-screen">
           <div className=" ">
-            <AdminSidebar activeT={2} selectedT={4} header={"Live Courses"} />
+            <AdminSidebar activeT={1} selectedT={1} header={"All Users"} />
           </div>
           <div className=" w-full">
             <DashboardHero />
-            <AllCourses />
+            <AllUsers />
           </div>
         </div>
       </AdminProtected>

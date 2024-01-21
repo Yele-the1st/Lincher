@@ -30,6 +30,9 @@ export const uploadCourse = async (
     }
     const course = await courseService.createCourse(data);
 
+    // Invalidate cache after creating a new course
+    await redis.del("allCourses");
+
     res.status(201).json({
       sucess: true,
       course,

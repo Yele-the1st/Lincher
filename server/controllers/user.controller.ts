@@ -428,6 +428,26 @@ export const getAllUsers = async (
   }
 };
 
+// Get all admin users
+export const getAllAdminUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    // Ensure 'role' field is indexed in the database
+    const adminUsers = await userModel.find({ role: "admin" });
+    // .select("username email role courses");
+
+    res.status(200).json({
+      success: true,
+      users: adminUsers,
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+};
+
 // update user role -- only for admin
 export const updateUserRole = async (
   req: Request,
@@ -435,16 +455,41 @@ export const updateUserRole = async (
   next: NextFunction
 ) => {
   try {
-    const { id, role } = req.body;
+    const { email, role } = req.body;
 
-    const user = await userService.updateUserRole(id, role);
+    // Check if the user making the request has admin role
+    // You might want to implement proper authentication and authorization logic
+    if (req.user?.role !== "admin") {
+      return next(new ErrorHandler("Unauthorized", 403));
+    }
 
-    res.status(201).json({
+    // Check if the email exists in the database
+    const existingUser = await userModel.findOne({ email });
+
+    if (!existingUser) {
+      // Return an error if the email is not found
+      return next(
+        new ErrorHandler("User with the provided email not found", 404)
+      );
+    }
+
+    // Update user role using userService
+    const updatedUser = await userService.updateUserRole(
+      existingUser._id,
+      role
+    );
+
+    if (!updatedUser) {
+      // Return an error if the user is not found by ID
+      return next(new ErrorHandler("User not found", 404));
+    }
+
+    res.status(200).json({
       success: true,
-      user,
+      user: updatedUser,
     });
   } catch (error: any) {
-    return next(new ErrorHandler(error.message, 400));
+    return next(new ErrorHandler(error.message, 500));
   }
 };
 

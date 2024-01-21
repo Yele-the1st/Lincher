@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { catchAsyncError } from "./catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
-import jwt, { Secret } from "jsonwebtoken";
+import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import { redis } from "../utils/redis";
 import { IUser } from "../models/user.model";
 
@@ -17,7 +17,7 @@ export const isAuthenticated = catchAsyncError(
     const decoded = jwt.verify(
       access_token,
       process.env.ACCESS_TOKEN as Secret
-    ) as IUser;
+    ) as JwtPayload;
 
     if (!decoded) {
       throw new ErrorHandler("Access Token is not valid", 400);

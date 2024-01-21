@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { FC, SetStateAction, useState } from "react";
@@ -56,7 +58,6 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
       setActiveTab(tab);
     }
   };
-  // https://www.youtube.com/embed/W6NZfCO5SIk?si=VLqpHKgCQdW2C1XS
 
   const asideHandler = () => {
     setAsideIsShown(true);
@@ -148,7 +149,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
             <li>
               <Link
                 href="/"
-                className="group flex items-center p-2 text-base font-normal dark:text-gray-100 rounded-[16px] hover:bg-background  dark:hover:bg-accent-hover"
+                className="group flex items-center p-2 text-base font-normal dark:text-gray-100 rounded-[3px] hover:bg-background  dark:hover:bg-accent-hover"
               >
                 <MdSpaceDashboard
                   className={` w-6 h-6  transition duration-75`}
@@ -164,7 +165,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                 className={`group flex cursor-pointer justify-between items-center p-2 text-base font-normal dark:text-gray-100 hover:bg-background   dark:hover:bg-accent-hover ${
                   activeTab === 1
                     ? " bg-background dark:bg-accent-hover rounded-t-[16px] "
-                    : " rounded-[16px] "
+                    : " rounded-[3px] "
                 } `}
               >
                 <div className=" flex items-center">
@@ -179,11 +180,11 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
               </div>
               {activeTab === 1 && (
                 <div className="">
-                  <div
-                    onClick={() => setSelectedTab(1)}
+                  <Link
+                    href={`/admin/users`}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
                       selectedTab === 1
-                        ? " bg-primary"
+                        ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
                   >
@@ -191,12 +192,12 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     <span className="ml-3 font-poppins transition duration-75">
                       Users
                     </span>
-                  </div>
+                  </Link>
                   <div
                     onClick={() => setSelectedTab(2)}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[16px] ${
                       selectedTab === 2
-                        ? " bg-primary"
+                        ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
                   >
@@ -216,7 +217,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                 className={`group cursor-pointer flex justify-between items-center p-2 text-base font-normal dark:text-gray-100 hover:bg-background  dark:hover:bg-accent-hover ${
                   activeTab === 2
                     ? "bg-background dark:bg-accent-hover rounded-t-[16px] "
-                    : " rounded-[16px] "
+                    : " rounded-[3px] "
                 } `}
               >
                 <div className=" flex items-center">
@@ -237,7 +238,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     href={`/admin/create-course`}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
                       selectedTab === 3
-                        ? " bg-primary"
+                        ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
                   >
@@ -253,7 +254,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     // onClick={() => setSelectedTab(1)}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[16px] ${
                       selectedTab === 4
-                        ? " bg-primary"
+                        ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
                   >
@@ -271,7 +272,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                 className={`group cursor-pointer flex justify-between items-center p-2 text-base font-normal dark:text-gray-100 hover:bg-background   dark:hover:bg-accent-hover ${
                   activeTab === 3
                     ? "bg-background dark:bg-accent-hover rounded-t-[16px] "
-                    : " rounded-[16px] "
+                    : " rounded-[3px] "
                 } `}
               >
                 <div className=" flex items-center">
@@ -292,7 +293,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     onClick={() => setSelectedTab(4)}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
                       selectedTab === 4
-                        ? " bg-primary"
+                        ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
                   >
@@ -307,7 +308,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     onClick={() => setSelectedTab(5)}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
                       selectedTab === 5
-                        ? " bg-primary"
+                        ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
                   >
@@ -322,7 +323,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     onClick={() => setSelectedTab(6)}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[16px] ${
                       selectedTab === 6
-                        ? " bg-primary"
+                        ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
                   >
@@ -339,8 +340,12 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
 
             <li>
               <Link
-                href="/"
-                className="group flex items-center p-2 text-base font-normal dark:text-gray-100 rounded-[16px] hover:bg-background   dark:hover:bg-accent-hover "
+                href={`/admin/team`}
+                className={` group flex items-center rounded-[3px] p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
+                  selectedTab === 10
+                    ? "bg-primary text-white"
+                    : "hover:bg-background dark:hover:bg-accent-hover "
+                } `}
               >
                 <FaUsersCog className={` w-6 h-6  transition duration-75`} />
                 <span className="ml-3 font-poppins transition duration-75">
@@ -355,7 +360,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                 className={`group cursor-pointer flex justify-between items-center p-2 text-base font-normal dark:text-gray-100 hover:bg-background   dark:hover:bg-accent-hover ${
                   activeTab === 4
                     ? "bg-background dark:bg-accent-hover rounded-t-[16px] "
-                    : " rounded-[16px] "
+                    : " rounded-[3px] "
                 } `}
               >
                 <div className=" flex items-center">
@@ -376,7 +381,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     onClick={() => setSelectedTab(7)}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
                       selectedTab === 7
-                        ? " bg-primary"
+                        ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
                   >
@@ -391,7 +396,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     onClick={() => setSelectedTab(8)}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
                       selectedTab === 8
-                        ? " bg-primary"
+                        ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
                   >
@@ -406,7 +411,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     onClick={() => setSelectedTab(9)}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[16px] ${
                       selectedTab === 9
-                        ? " bg-primary"
+                        ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
                   >
@@ -422,7 +427,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
             </li>
 
             <div className=" cursor-pointer pt-2 border-t">
-              <div className="group flex items-center p-2 text-base font-normal dark:text-gray-100 rounded-[16px] hover:bg-background   dark:hover:bg-accent-hover ">
+              <div className="group flex items-center p-2 text-base font-normal dark:text-gray-100 rounded-[3px] hover:bg-background   dark:hover:bg-accent-hover ">
                 <MdSettings className={` w-6 h-6  transition duration-75`} />
                 <span className="ml-3 font-poppins transition duration-75">
                   Settings
@@ -430,7 +435,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
               </div>
             </div>
             <div className=" pb-10 cursor-pointer">
-              <div className="group flex items-center p-2 text-base font-normal dark:text-gray-100 rounded-[16px] hover:bg-background   dark:hover:bg-accent-hover ">
+              <div className="group flex items-center p-2 text-base font-normal dark:text-gray-100 rounded-[3px] hover:bg-background   dark:hover:bg-accent-hover ">
                 <IoLogOut className={` w-6 h-6  transition duration-75`} />
                 <span className="ml-3 font-poppins transition duration-75">
                   Logout

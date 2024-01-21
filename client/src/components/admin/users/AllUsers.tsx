@@ -3,40 +3,47 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button } from "@mui/material";
 import { BsTrash3Fill } from "react-icons/bs";
 import { useTheme } from "next-themes";
-import { FaEdit } from "react-icons/fa";
-import { useGetAllCoursesQuery } from "@/redux/features/courses/coursesApi";
+import { FaEdit, FaEnvelope } from "react-icons/fa";
 import Loader from "@/components/Loader/Loader";
-import { timeAgo } from "@/utils/TimeAgo";
+import { openURLInNewTab, timeAgo } from "@/utils/TimeAgo";
+import { useGetAllUsersQuery } from "@/redux/features/user/userApi";
 
-interface AllCoursesProps {}
+interface AllUsersProps {}
 
-const AllCourses: FC<AllCoursesProps> = ({}) => {
+const AllUsers: FC<AllUsersProps> = ({}) => {
   const { theme, setTheme } = useTheme();
 
-  const { isLoading, data, error } = useGetAllCoursesQuery({});
+  const { isLoading, data, error } = useGetAllUsersQuery({});
 
   const columns = [
     { field: "id", headerName: "ID", width: 110 },
-    { field: "title", headerName: "Course Title", width: 300 },
-    { field: "ratings", headerName: "Ratings", width: 150 },
-    { field: "purchased", headerName: "Purchased", width: 150 },
-    { field: "created_at", headerName: "Created At", width: 180 },
+    { field: "name", headerName: "Name", width: 160 },
+    { field: "email", headerName: "Email", width: 200 },
+    { field: "role", headerName: "Role", width: 110 },
+    { field: "courses", headerName: "Purchased Courses", width: 150 },
+    { field: "created_at", headerName: "Joined At", width: 150 },
+
     {
       field: "",
-      headerName: "Edit",
+      headerName: "Email",
       width: 110,
-
       renderCell: (params: any) => {
         return (
           <>
-            <Button sx={{ display: "flex", justifyContent: "left" }}>
-              <FaEdit size={20} className="dark:text-white text-black" />
-            </Button>
+            {/* <Button
+              onClick={() => openURLInNewTab(`mailto:${params?.row.email}`)}
+            >
+              <FaEnvelope size={20} className="dark:text-white text-black" />
+            </Button> */}
+            <a href={`mailto:${params?.row.email}`}>
+              <Button sx={{ display: "flex", justifyContent: "left" }}>
+                <FaEnvelope size={20} className="dark:text-white text-black" />
+              </Button>
+            </a>
           </>
         );
       },
     },
-
     {
       field: "  ",
       headerName: "Delete",
@@ -57,12 +64,13 @@ const AllCourses: FC<AllCoursesProps> = ({}) => {
 
   {
     data &&
-      data.courses.forEach((item: any) => {
+      data.users.forEach((item: any) => {
         rows.push({
           id: item._id,
-          title: item.name,
-          ratings: item.ratings,
-          purchased: item.purchased,
+          name: item.name,
+          email: item.email,
+          role: item.role,
+          courses: item.courses.length,
           created_at: timeAgo(item.createdAt),
         });
       });
@@ -133,4 +141,4 @@ const AllCourses: FC<AllCoursesProps> = ({}) => {
   );
 };
 
-export default AllCourses;
+export default AllUsers;
