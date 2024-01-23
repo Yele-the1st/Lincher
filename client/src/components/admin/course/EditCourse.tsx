@@ -7,19 +7,31 @@ import CourseData from "./CourseData";
 import CourseContent from "./CourseContent";
 import CoursePreview from "./CoursePreview";
 import CourseOptionsMobile from "./CourseOptionsMobile";
-import { useCreateCourseMutation } from "@/redux/features/courses/coursesApi";
+import {
+  useCreateCourseMutation,
+  useEditCourseMutation,
+  useGetCourseEditQuery,
+} from "@/redux/features/courses/coursesApi";
 import toast from "react-hot-toast";
 import { redirect } from "next/navigation";
 
-interface CreateCourseProps {}
+interface EditCourseProps {
+  id: string;
+}
 
-const CreateCourse: FC<CreateCourseProps> = ({}) => {
-  const [createCourse, { isLoading, isSuccess, error }] =
-    useCreateCourseMutation();
+const EditCourse: FC<EditCourseProps> = ({ id }) => {
+  const { data, isLoading, isError, refetch } = useGetCourseEditQuery(
+    { id },
+    { refetchOnMountOrArgChange: true }
+  );
+
+  const [editCourse, { isSuccess, error }] = useEditCourseMutation();
+
+  const course = data?.course;
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Course created successfully");
+      toast.success("Course Updated successfully");
       redirect("/admin/courses");
     }
     if (error) {
@@ -60,7 +72,27 @@ const CreateCourse: FC<CreateCourseProps> = ({}) => {
       suggestion: "",
     },
   ]);
+
   const [courseData, setCourseData] = useState({});
+
+  useEffect(() => {
+    if (course) {
+      setCourseInfo({
+        name: course.name,
+        description: course.description,
+        price: course.price,
+        estimatedPrice: course.estimatedPrice,
+        type: course.type,
+        tags: course.tags,
+        level: course.level,
+        demoUrl: course.demoUrl,
+        thumbnail: course.thumbnail?.url,
+      });
+      setBenefits(course.benefits);
+      setPrerequisites(course.prerequisites);
+      setCourseContentData(course.courseData);
+    }
+  }, [course]);
 
   const handleSubmit = async () => {
     // format benefits array
@@ -111,9 +143,7 @@ const CreateCourse: FC<CreateCourseProps> = ({}) => {
   const handleCourseCreate = async (e: any) => {
     const data = courseData;
 
-    if (!isLoading) {
-      await createCourse(data);
-    }
+    await editCourse({ id: course._id, data });
   };
 
   return (
@@ -159,7 +189,7 @@ const CreateCourse: FC<CreateCourseProps> = ({}) => {
                   active={active}
                   setActive={setActive}
                   isLoading={isLoading}
-                  isEdit={false}
+                  isEdit={true}
                 />
               )}
             </div>
@@ -173,4 +203,4 @@ const CreateCourse: FC<CreateCourseProps> = ({}) => {
   );
 };
 
-export default CreateCourse;
+export default EditCourse;

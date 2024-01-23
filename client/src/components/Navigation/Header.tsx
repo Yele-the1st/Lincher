@@ -105,8 +105,8 @@ const Header: FC<HeaderProps> = ({
           <div className="ml-1 font-Josefin text-xl">lincher</div>
         </Link>
 
-        <div className=" w-full justify-end 1100px:justify-between  items-center flex">
-          <NavItems activeItem={activeItem} isMobile={false} />
+        <div className=" w-full justify-end items-center flex">
+          {/* <NavItems activeItem={activeItem} isMobile={false} /> */}
 
           <div className=" flex items-center">
             <ThemeToogle />

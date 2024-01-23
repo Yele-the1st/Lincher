@@ -28,14 +28,14 @@ export const uploadCourse = async (
         url: myCloud.secure_url,
       };
     }
-    const course = await courseService.createCourse(data);
+
+    await courseService.createCourse(data);
 
     // Invalidate cache after creating a new course
     await redis.del("allCourses");
 
     res.status(201).json({
       sucess: true,
-      course,
     });
   } catch (error: any) {
     return next(new ErrorHandler(error.message, 400));
@@ -52,8 +52,12 @@ export const editCourse = async (
     const data = req.body;
     const thumbnail = data.thumbnail;
 
-    if (thumbnail) {
-      await cloudinary.v2.uploader.destroy(thumbnail.public_id);
+    const courseId = req.params.id;
+
+    const courseData = (await courseModel.findById(courseId)) as any;
+
+    if (thumbnail && !thumbnail.startsWith("https")) {
+      await cloudinary.v2.uploader.destroy(courseData?.thumbnail?.public_id);
 
       const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
         folder: "courses",
@@ -65,7 +69,12 @@ export const editCourse = async (
       };
     }
 
-    const courseId = req.params.id;
+    if (thumbnail.startsWith("https")) {
+      data.thumbnail = {
+        public_id: courseData?.thumbnail.public_id,
+        url: courseData?.thumbnail.url,
+      };
+    }
 
     const course = await courseModel.findByIdAndUpdate(
       courseId,
@@ -74,6 +83,10 @@ export const editCourse = async (
       },
       { new: true }
     );
+
+    // Invalidate cache after creating a new course
+    await redis.del("allCourses");
+
     res.status(201).json({
       success: true,
       course,
@@ -179,6 +192,30 @@ export const getCourseByUser = async (
     res.status(200).json({
       success: true,
       content,
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+};
+
+// get course content -- only for valid user
+export const getCourseById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const courseId = req.params.id;
+
+    const course = await courseModel.findById(courseId);
+
+    if (!course) {
+      throw new ErrorHandler("Course does not exist", 404);
+    }
+
+    res.status(200).json({
+      success: true,
+      course,
     });
   } catch (error: any) {
     return next(new ErrorHandler(error.message, 400));
@@ -504,12 +541,13 @@ export const deleteCourse = async (
     const course = await courseModel.findById(id);
 
     if (!course) {
-      return next(new ErrorHandler("User not found", 404));
+      return next(new ErrorHandler("Course not found", 404));
     }
 
     await course.deleteOne({ id });
 
-    await redis.del(id);
+    // Invalidate cache after creating a new course
+    await redis.del("allCourses", id);
 
     res.status(201).json({
       success: true,

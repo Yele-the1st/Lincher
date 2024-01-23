@@ -4,33 +4,48 @@ import ErrorHandler from "../utils/ErrorHandler";
 import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import { redis } from "../utils/redis";
 import { IUser } from "../models/user.model";
+import { updateAccessToken } from "../controllers/user.controller";
 
 // AUthenticate user
 export const isAuthenticated = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    const access_token = req.cookies.access_token;
-
-    if (!access_token) {
+    // Validate the request object
+    if (!req.cookies || !req.cookies.access_token) {
       throw new ErrorHandler("Please login to access this resource", 400);
     }
 
-    const decoded = jwt.verify(
-      access_token,
-      process.env.ACCESS_TOKEN as Secret
-    ) as JwtPayload;
+    try {
+      const decoded = jwt.verify(
+        req.cookies.access_token,
+        process.env.ACCESS_TOKEN as Secret
+      ) as JwtPayload;
 
-    if (!decoded) {
-      throw new ErrorHandler("Access Token is not valid", 400);
+      // Process the decoded token
+      const user = await redis.get(decoded.id);
+
+      if (!user) {
+        throw new ErrorHandler("Please login to access this resource", 400);
+      }
+
+      req.user = JSON.parse(user);
+      next();
+    } catch (error: any) {
+      if (error.name === "TokenExpiredError") {
+        // Handle token expiration, e.g., update token
+        try {
+          await updateAccessToken(req, res, next);
+        } catch (updateError) {
+          // Log the error for debugging purposes
+          console.error("Error updating access token:", updateError);
+          return next(updateError);
+        }
+      } else {
+        // Log the verification error for debugging purposes
+        console.error("Access Token verification error:", error);
+        // Handle other verification errors
+        throw new ErrorHandler("Access Token is not valid", 400);
+      }
     }
-
-    const user = await redis.get(decoded.id);
-
-    if (!user) {
-      throw new ErrorHandler("Please login to access this resource", 400);
-    }
-
-    req.user = JSON.parse(user);
-    next();
   }
 );
 

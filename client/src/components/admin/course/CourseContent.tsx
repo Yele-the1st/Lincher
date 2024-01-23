@@ -4,9 +4,8 @@ import { MdDriveFileRenameOutline } from "react-icons/md";
 
 import { FaChevronDown, FaFolderPlus } from "react-icons/fa";
 import { BsLink45Deg, BsTrash3Fill } from "react-icons/bs";
-import { AiOutlinePlusCircle } from "react-icons/ai";
+
 import toast from "react-hot-toast";
-import { PiFilePlusFill } from "react-icons/pi";
 
 interface CourseContentProps {
   active: number;

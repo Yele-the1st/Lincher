@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button } from "@mui/material";
 import { BsTrash3Fill } from "react-icons/bs";
@@ -7,13 +7,20 @@ import { FaEdit } from "react-icons/fa";
 import { useGetAllCoursesQuery } from "@/redux/features/courses/coursesApi";
 import Loader from "@/components/Loader/Loader";
 import { timeAgo } from "@/utils/TimeAgo";
+import DeleteCourseModal from "./DeleteCourseModal";
+import Link from "next/link";
 
 interface AllCoursesProps {}
 
 const AllCourses: FC<AllCoursesProps> = ({}) => {
   const { theme, setTheme } = useTheme();
+  const [open, setOpen] = useState(false);
+  const [courseId, setCourseId] = useState<string>("");
 
-  const { isLoading, data, error } = useGetAllCoursesQuery({});
+  const { isLoading, data, error } = useGetAllCoursesQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
 
   const columns = [
     { field: "id", headerName: "ID", width: 110 },
@@ -29,9 +36,12 @@ const AllCourses: FC<AllCoursesProps> = ({}) => {
       renderCell: (params: any) => {
         return (
           <>
-            <Button sx={{ display: "flex", justifyContent: "left" }}>
+            <Link
+              href={`/admin/edit-course/${params.row.id}`}
+              className=" flex justify-start"
+            >
               <FaEdit size={20} className="dark:text-white text-black" />
-            </Button>
+            </Link>
           </>
         );
       },
@@ -44,7 +54,13 @@ const AllCourses: FC<AllCoursesProps> = ({}) => {
       renderCell: (params: any) => {
         return (
           <>
-            <Button sx={{ display: "flex", justifyContent: "left" }}>
+            <Button
+              onClick={() => {
+                setOpen(!open);
+                setCourseId(params.row.id);
+              }}
+              sx={{ display: "flex", justifyContent: "left" }}
+            >
               <BsTrash3Fill size={20} className="dark:text-white text-black" />
             </Button>
           </>
@@ -59,7 +75,7 @@ const AllCourses: FC<AllCoursesProps> = ({}) => {
     data &&
       data.courses.forEach((item: any) => {
         rows.push({
-          id: item._id,
+          id: item?._id,
           title: item.name,
           ratings: item.ratings,
           purchased: item.purchased,
@@ -127,6 +143,7 @@ const AllCourses: FC<AllCoursesProps> = ({}) => {
           >
             <DataGrid checkboxSelection rows={rows} columns={columns} />
           </Box>
+          {open && <DeleteCourseModal setOpen={setOpen} courseId={courseId} />}
         </Box>
       )}
     </div>

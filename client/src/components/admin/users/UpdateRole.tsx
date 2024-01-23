@@ -1,7 +1,9 @@
 "use client";
 
-import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
-import { useUpdateUserRoleMutation } from "@/redux/features/user/userApi";
+import {
+  useGetAllAdminUsersQuery,
+  useUpdateUserRoleMutation,
+} from "@/redux/features/user/userApi";
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -14,22 +16,27 @@ interface PersonalDetailProps {
 
 const UpdateRole: FC<PersonalDetailProps> = ({ setActive }) => {
   const [updateUserRole, { isSuccess, error }] = useUpdateUserRoleMutation();
-  const { isLoading: meLoading, refetch } = useLoadUserQuery(undefined);
+  const { isLoading: meLoading, refetch } = useGetAllAdminUsersQuery({});
 
   const [email, setEmail] = useState<string>("");
   const [role, setRole] = useState<string>("admin");
 
   useEffect(() => {
-    if (isSuccess) {
-      refetch();
-    }
     if (error) {
-      console.log(error);
+      if ("data" in error) {
+        const errorMessage = error as any;
+        toast.error(errorMessage.data.message);
+      }
     }
+
     if (isSuccess) {
       toast.success("Profile updated successfully");
     }
-  }, [error, isSuccess, refetch]);
+    if (isSuccess) {
+      refetch();
+      setActive(false);
+    }
+  }, [error, isSuccess, refetch, setActive]);
 
   const handleSubmit = async (e: any) => {
     if (role !== "") {
@@ -96,7 +103,7 @@ const UpdateRole: FC<PersonalDetailProps> = ({ setActive }) => {
                     name=""
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    id="name"
+                    id="email"
                     className={`block flex-1 border-0 bg-transparent w-full h-full py-1.5 pl-1 text-gray-900 dark:text-white outline-none  placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6`}
                   />
                 </div>
@@ -114,7 +121,7 @@ const UpdateRole: FC<PersonalDetailProps> = ({ setActive }) => {
                   <select
                     name=""
                     onChange={(e) => setRole(e.target.value)}
-                    id="name"
+                    id="role"
                     className={`block flex-1 border-0 bg-transparent w-full h-full py-1.5 pl-1 text-gray-900 dark:text-white outline-none  placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6`}
                   >
                     <option value="admin">Admin</option>

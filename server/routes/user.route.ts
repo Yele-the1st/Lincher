@@ -11,7 +11,6 @@ import {
   logoutUser,
   registerUser,
   socialAuth,
-  updateAccessToken,
   updatePassword,
   updatePicture,
   updateUserInfo,
@@ -32,18 +31,15 @@ router.post("/login", catchAsyncError(loginUser));
 //Logout a user
 router.get(
   "/logout",
-  updateAccessToken,
+
   isAuthenticated,
   catchAsyncError(logoutUser)
 );
 
-//Logout a user
-router.get("/refresh", catchAsyncError(updateAccessToken));
-
 //Get user info
 router.get(
   "/me",
-  updateAccessToken,
+
   isAuthenticated,
   catchAsyncError(getUserInfo)
 );
@@ -54,7 +50,7 @@ router.post("/social-auth", catchAsyncError(socialAuth));
 //Get update user info
 router.put(
   "/update-user-info",
-  updateAccessToken,
+
   isAuthenticated,
   catchAsyncError(updateUserInfo)
 );
@@ -62,7 +58,7 @@ router.put(
 // Update user Password
 router.put(
   "/update-user-password",
-  updateAccessToken,
+
   isAuthenticated,
   catchAsyncError(updatePassword)
 );
@@ -70,7 +66,7 @@ router.put(
 // Update user Avatar
 router.put(
   "/update-user-avatar",
-  updateAccessToken,
+
   isAuthenticated,
   catchAsyncError(updatePicture)
 );
@@ -78,7 +74,7 @@ router.put(
 // Update user Avatar
 router.delete(
   "/delete-user-avatar",
-  updateAccessToken,
+
   isAuthenticated,
   catchAsyncError(deletePicture)
 );
@@ -86,7 +82,7 @@ router.delete(
 // Get all users
 router.get(
   "/get-all-users",
-  updateAccessToken,
+
   isAuthenticated,
   authorizeRoles("admin"),
   catchAsyncError(getAllUsers)
@@ -95,7 +91,7 @@ router.get(
 // Get all admin users
 router.get(
   "/get-all-admin-users",
-  updateAccessToken,
+
   isAuthenticated,
   authorizeRoles("admin"),
   catchAsyncError(getAllAdminUsers)
@@ -104,7 +100,7 @@ router.get(
 // update user role
 router.put(
   "/update-user-roles",
-  updateAccessToken,
+
   isAuthenticated,
   authorizeRoles("admin"),
   catchAsyncError(updateUserRole)
@@ -113,7 +109,7 @@ router.put(
 // delete user
 router.delete(
   "/delete-user/:id",
-  updateAccessToken,
+
   isAuthenticated,
   authorizeRoles("admin"),
   catchAsyncError(deleteUser)

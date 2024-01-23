@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button } from "@mui/material";
 import { BsTrash3Fill } from "react-icons/bs";
@@ -7,13 +7,19 @@ import { FaEdit, FaEnvelope } from "react-icons/fa";
 import Loader from "@/components/Loader/Loader";
 import { openURLInNewTab, timeAgo } from "@/utils/TimeAgo";
 import { useGetAllUsersQuery } from "@/redux/features/user/userApi";
+import DeleteUser from "./DeleteUser";
 
 interface AllUsersProps {}
 
 const AllUsers: FC<AllUsersProps> = ({}) => {
   const { theme, setTheme } = useTheme();
+  const [open, setOpen] = useState(false);
+  const [userId, setUserId] = useState<string>("");
 
-  const { isLoading, data, error } = useGetAllUsersQuery({});
+  const { isLoading, data, error } = useGetAllUsersQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
 
   const columns = [
     { field: "id", headerName: "ID", width: 110 },
@@ -51,7 +57,13 @@ const AllUsers: FC<AllUsersProps> = ({}) => {
       renderCell: (params: any) => {
         return (
           <>
-            <Button sx={{ display: "flex", justifyContent: "left" }}>
+            <Button
+              onClick={() => {
+                setOpen(!open);
+                setUserId(params.row.id);
+              }}
+              sx={{ display: "flex", justifyContent: "left" }}
+            >
               <BsTrash3Fill size={20} className="dark:text-white text-black" />
             </Button>
           </>
@@ -135,6 +147,7 @@ const AllUsers: FC<AllUsersProps> = ({}) => {
           >
             <DataGrid checkboxSelection rows={rows} columns={columns} />
           </Box>
+          {open && <DeleteUser setOpen={setOpen} userId={userId} />}
         </Box>
       )}
     </div>

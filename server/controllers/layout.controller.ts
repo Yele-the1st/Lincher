@@ -22,12 +22,15 @@ export const createLayout = async (
         folder: "layout",
       });
       const banner = {
-        image: {
-          public_id: myCloud.public_id,
-          url: myCloud.secure_url,
+        type: "Banner",
+        banner: {
+          image: {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          },
+          title,
+          subTitle,
         },
-        title,
-        subTitle,
       };
       await layoutModel.create(banner);
     } else if (type === "FAQ") {

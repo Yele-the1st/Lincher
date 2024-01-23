@@ -15,7 +15,10 @@ const AllTeams: FC<AllTeamsProps> = ({}) => {
   const { theme, setTheme } = useTheme();
   const [active, setActive] = useState(false);
 
-  const { isLoading, data, error } = useGetAllAdminUsersQuery({});
+  const { isLoading, data, error } = useGetAllAdminUsersQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
 
   const columns = [
     { field: "id", headerName: "ID", width: 110 },
@@ -87,9 +90,9 @@ const AllTeams: FC<AllTeamsProps> = ({}) => {
           <div className=" w-full flex justify-end">
             <div
               onClick={() => setActive(!active)}
-              className=" w-full 800px:w-[180px] flex items-center justify-center h-[44px] text-center text-white bg-primary rounded-[3px] cursor-pointer "
+              className=" w-full 800px:w-[160px] flex items-center justify-center h-[44px] text-center text-white bg-primary rounded-[3px] cursor-pointer "
             >
-              Add New Member
+              Add Member
             </div>
           </div>
           <Box

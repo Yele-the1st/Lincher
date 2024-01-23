@@ -1,7 +1,5 @@
 import { FC } from "react";
 import toast from "react-hot-toast";
-import { IoAddCircle } from "react-icons/io5";
-import { MdAddBox } from "react-icons/md";
 
 interface CourseDataProps {
   benefits: { title: string }[];
@@ -20,19 +18,51 @@ const CourseData: FC<CourseDataProps> = ({
   active,
   setActive,
 }) => {
+  // const handleBenefitChange = (index: number, value: any) => {
+  //   const updatedBenefits = [...benefits];
+  //   updatedBenefits[index].title = value;
+  //   setBenefits(updatedBenefits);
+  // };
+
   const handleBenefitChange = (index: number, value: any) => {
+    // Create a shallow copy of the benefits array
     const updatedBenefits = [...benefits];
-    updatedBenefits[index].title = value;
+
+    // Create a new object with the updated title value
+    const updatedBenefit = { ...updatedBenefits[index], title: value };
+
+    // Update the benefits array with the new object
+    updatedBenefits[index] = updatedBenefit;
+
+    // Set the updated benefits array in the state
     setBenefits(updatedBenefits);
   };
+
   const handleAddBenefit = () => {
     setBenefits([...benefits, { title: "" }]);
   };
+  // const handlePrerequisiteChange = (index: number, value: any) => {
+  //   const updatedPrerequisites = [...prerequisites];
+  //   updatedPrerequisites[index].title = value;
+  //   setPrerequisites(updatedPrerequisites);
+  // };
   const handlePrerequisiteChange = (index: number, value: any) => {
+    // Create a shallow copy of the prerequisites array
     const updatedPrerequisites = [...prerequisites];
-    updatedPrerequisites[index].title = value;
+
+    // Create a new object with the updated title value
+    const updatedPrerequisite = {
+      ...updatedPrerequisites[index],
+      title: value,
+    };
+
+    // Update the prerequisites array with the new object
+    updatedPrerequisites[index] = updatedPrerequisite;
+
+    // Set the updated prerequisites array in the state
     setPrerequisites(updatedPrerequisites);
   };
+
   const handleAddPrerequisite = () => {
     setPrerequisites([...prerequisites, { title: "" }]);
   };

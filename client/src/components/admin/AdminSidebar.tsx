@@ -289,8 +289,8 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
               </div>
               {activeTab === 3 && (
                 <div className="">
-                  <div
-                    onClick={() => setSelectedTab(4)}
+                  <Link
+                    href={`/admin/hero`}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
                       selectedTab === 4
                         ? " bg-primary text-white"
@@ -303,7 +303,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     <span className="ml-3 font-poppins transition duration-75">
                       Hero
                     </span>
-                  </div>
+                  </Link>
                   <div
                     onClick={() => setSelectedTab(5)}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${

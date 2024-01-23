@@ -13,6 +13,7 @@ interface CoursePreviewProps {
   courseData: any;
   handleCourseCreate: any;
   isLoading: boolean;
+  isEdit: boolean;
 }
 
 const CoursePreview: FC<CoursePreviewProps> = ({
@@ -21,6 +22,7 @@ const CoursePreview: FC<CoursePreviewProps> = ({
   courseData,
   handleCourseCreate,
   isLoading,
+  isEdit,
 }) => {
   const discountPercentage =
     ((courseData?.estimatedPrice - courseData?.price) /
@@ -101,7 +103,7 @@ const CoursePreview: FC<CoursePreviewProps> = ({
       <div className=" w-full mt-10 text-black dark:text-white">
         <div className=" flex items-center">
           <h1 className="font-bold text-4xl">
-            {courseData?.price === "0" ? "Free" : "$" + courseData?.price}
+            {courseData?.price === 0 || "0" ? "Free" : "$" + courseData?.price}
           </h1>
 
           <h5 className=" pl-3 text-[20px] line-through opacity-80 ">
@@ -219,7 +221,7 @@ const CoursePreview: FC<CoursePreviewProps> = ({
               </div>
             </div>
           ) : (
-            "Create"
+            <div>{isEdit ? "Edit" : "Create"}</div>
           )}
         </div>
       </div>
