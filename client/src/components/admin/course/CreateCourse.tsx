@@ -1,15 +1,17 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { lazy, Suspense, FC, useEffect, useState } from "react";
 import CourseInformation from "./CourseInformation";
 import CourseOptions from "./CourseOptions";
-import CourseData from "./CourseData";
-import CourseContent from "./CourseContent";
-import CoursePreview from "./CoursePreview";
 import CourseOptionsMobile from "./CourseOptionsMobile";
 import { useCreateCourseMutation } from "@/redux/features/courses/coursesApi";
 import toast from "react-hot-toast";
 import { redirect } from "next/navigation";
+import Loader from "@/components/Loader/Loader";
+
+const LazyCourseData = lazy(() => import("./CourseData"));
+const LazyCourseContent = lazy(() => import("./CourseContent"));
+const LazyCoursePreview = lazy(() => import("./CoursePreview"));
 
 interface CreateCourseProps {}
 
@@ -39,6 +41,7 @@ const CreateCourse: FC<CreateCourseProps> = ({}) => {
     type: "youtube",
     tags: "",
     level: "",
+    categories: "",
     demoUrl: "",
     thumbnail: "",
   });
@@ -51,6 +54,7 @@ const CreateCourse: FC<CreateCourseProps> = ({}) => {
       title: "",
       description: "",
       videoSection: "Untitled Section",
+      videoLength: "",
       links: [
         {
           title: "",
@@ -134,33 +138,39 @@ const CreateCourse: FC<CreateCourseProps> = ({}) => {
                 />
               )}
               {active === 1 && (
-                <CourseData
-                  benefits={benefits}
-                  setBenefits={setBenefits}
-                  prerequisites={prerequisites}
-                  setPrerequisites={setPrerequisites}
-                  active={active}
-                  setActive={setActive}
-                />
+                <Suspense fallback={<Loader />}>
+                  <LazyCourseData
+                    benefits={benefits}
+                    setBenefits={setBenefits}
+                    prerequisites={prerequisites}
+                    setPrerequisites={setPrerequisites}
+                    active={active}
+                    setActive={setActive}
+                  />
+                </Suspense>
               )}
               {active === 2 && (
-                <CourseContent
-                  courseContentData={courseContentData}
-                  setCourseContentData={setCourseContentData}
-                  handleSubmit={handleSubmit}
-                  active={active}
-                  setActive={setActive}
-                />
+                <Suspense fallback={<Loader />}>
+                  <LazyCourseContent
+                    courseContentData={courseContentData}
+                    setCourseContentData={setCourseContentData}
+                    handleSubmit={handleSubmit}
+                    active={active}
+                    setActive={setActive}
+                  />
+                </Suspense>
               )}
               {active === 3 && (
-                <CoursePreview
-                  courseData={courseData}
-                  handleCourseCreate={handleCourseCreate}
-                  active={active}
-                  setActive={setActive}
-                  isLoading={isLoading}
-                  isEdit={false}
-                />
+                <Suspense fallback={<Loader />}>
+                  <LazyCoursePreview
+                    courseData={courseData}
+                    handleCourseCreate={handleCourseCreate}
+                    active={active}
+                    setActive={setActive}
+                    isLoading={isLoading}
+                    isEdit={false}
+                  />
+                </Suspense>
               )}
             </div>
             <div className=" hidden w-4/12 xl:flex justify-center">

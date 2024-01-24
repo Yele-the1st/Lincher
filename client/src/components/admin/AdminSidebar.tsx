@@ -304,8 +304,8 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                       Hero
                     </span>
                   </Link>
-                  <div
-                    onClick={() => setSelectedTab(5)}
+                  <Link
+                    href={`/admin/faq`}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
                       selectedTab === 5
                         ? " bg-primary text-white"
@@ -318,8 +318,9 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     <span className="ml-3 font-poppins transition duration-75">
                       Faq
                     </span>
-                  </div>
-                  <div
+                  </Link>
+                  <Link
+                    href={`/admin/categories`}
                     onClick={() => setSelectedTab(6)}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[16px] ${
                       selectedTab === 6
@@ -333,7 +334,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     <span className="ml-3 font-poppins transition duration-75">
                       Categories
                     </span>
-                  </div>
+                  </Link>
                 </div>
               )}
             </li>

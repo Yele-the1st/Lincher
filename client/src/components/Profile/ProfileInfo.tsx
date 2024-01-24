@@ -1,3 +1,5 @@
+"use client";
+
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import {
   useDeletePictureMutation,

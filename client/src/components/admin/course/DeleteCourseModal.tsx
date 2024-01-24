@@ -82,7 +82,7 @@ const DeleteCourseModal: FC<DeleteCourseModalProps> = ({
             <div className=" h-[200px] w-full ">
               <Image
                 className=" w-full h-full object-cover overflow-hidden "
-                src="/assets/sparkles.jpg"
+                src="/assets/burn.jpg"
                 alt="The 3D journey starts here"
                 width={400}
                 height={400}
@@ -97,7 +97,7 @@ const DeleteCourseModal: FC<DeleteCourseModalProps> = ({
             <div className=" p-6 text-sm flex justify-center gap-2">
               <button
                 onClick={() => setOpen(false)}
-                className=" h-[44px] rounded-[3px] px-4  w-full  pb-[1px] shadow-md bg-accent dark:bg-[rgba(255,255,255,.03)] text-background-foregroundL  dark:text-[rgba(255,255,255,.4)] leading-4 whitespace-nowrap "
+                className=" h-[44px] rounded-[3px] px-4  w-full  pb-[1px] shadow-md bg-accent dark:bg-[rgba(255,255,255,.03)]  text-background-foregroundL/30 dark:hover:text-white hover:text-background-foregroundL text-background-foregroundL  dark:text-[rgba(255,255,255,.4)] leading-4 whitespace-nowrap "
               >
                 Cancel
               </button>

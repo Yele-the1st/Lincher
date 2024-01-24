@@ -9,40 +9,42 @@ import { updateAccessToken } from "../controllers/user.controller";
 // AUthenticate user
 export const isAuthenticated = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    // Validate the request object
-    if (!req.cookies || !req.cookies.access_token) {
-      throw new ErrorHandler("Please login to access this resource", 400);
-    }
-
     try {
+      if (!req.cookies || !req.cookies.access_token) {
+        console.error("Access token is missing in cookies");
+        throw new ErrorHandler("Please login to access this resource", 400);
+      }
+
       const decoded = jwt.verify(
         req.cookies.access_token,
         process.env.ACCESS_TOKEN as Secret
       ) as JwtPayload;
 
-      // Process the decoded token
+      console.log("Decoded Token:", decoded);
+
       const user = await redis.get(decoded.id);
 
       if (!user) {
+        console.error("User data not found in Redis");
         throw new ErrorHandler("Please login to access this resource", 400);
       }
 
       req.user = JSON.parse(user);
       next();
     } catch (error: any) {
+      console.error("Authentication Error:", error);
+
       if (error.name === "TokenExpiredError") {
         // Handle token expiration, e.g., update token
+        console.log("Handling Token Expiry");
         try {
           await updateAccessToken(req, res, next);
         } catch (updateError) {
-          // Log the error for debugging purposes
           console.error("Error updating access token:", updateError);
           return next(updateError);
         }
       } else {
-        // Log the verification error for debugging purposes
         console.error("Access Token verification error:", error);
-        // Handle other verification errors
         throw new ErrorHandler("Access Token is not valid", 400);
       }
     }

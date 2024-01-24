@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button } from "@mui/material";

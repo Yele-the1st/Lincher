@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, useState } from "react";
 import { MdNotifications } from "react-icons/md";
 import { ThemeToogle } from "../Navigation/ThemeToogle";

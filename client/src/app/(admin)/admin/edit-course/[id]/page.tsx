@@ -3,7 +3,6 @@
 import { FC } from "react";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import Heading from "@/utils/Heading";
-import CreateCourse from "@/components/admin/course/CreateCourse";
 import DashboardHeader from "@/components/admin/DashboardHeader";
 import EditCourse from "@/components/admin/course/EditCourse";
 

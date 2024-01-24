@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, useState } from "react";
 import { FaFileCirclePlus, FaPencil } from "react-icons/fa6";
 import { MdDriveFileRenameOutline } from "react-icons/md";

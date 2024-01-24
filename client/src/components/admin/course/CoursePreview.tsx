@@ -13,7 +13,7 @@ interface CoursePreviewProps {
   courseData: any;
   handleCourseCreate: any;
   isLoading: boolean;
-  isEdit: boolean;
+  isEdit?: boolean;
 }
 
 const CoursePreview: FC<CoursePreviewProps> = ({

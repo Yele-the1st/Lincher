@@ -1,5 +1,8 @@
+"use client";
+
+import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
 import Image from "next/image";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { BiSolidLockAlt } from "react-icons/bi";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 
@@ -18,11 +21,33 @@ const CourseInformation: FC<CourseInformationProps> = ({
 }) => {
   const [dragging, setDragging] = useState(false);
 
+  const { data } = useGetHeroDataQuery("Categories", {});
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setCategories(data.layout?.categories);
+    }
+  }, [data]);
+
   const [selectedOption, setSelectedOption] = useState("youtube");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+
+  const toggleCategories = () => {
+    setIsCategoriesOpen(!isCategoriesOpen);
+    setIsDropdownOpen(false);
+  };
+
+  const handleCategoriesChange = (event: any) => {
+    event.preventDefault();
+    setCourseInfo({ ...courseInfo, categories: event.target.value });
+    setIsCategoriesOpen(false);
+  };
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+    setIsCategoriesOpen(false);
   };
 
   const handleSelectChange = (event: any) => {
@@ -253,34 +278,81 @@ const CourseInformation: FC<CourseInformationProps> = ({
             </div>
           </div>
         </div>
-        <div className=" w-full flex justify-between mt-5">
-          <div className=" w-[48%] sm:w-[45%]">
+        <div className=" w-full">
+          <label
+            htmlFor=""
+            className={`text-sm block w-full font-medium leading-6 font-Poppins text-black dark:text-white`}
+          >
+            Course Level
+          </label>
+          <div className=" flex flex-1 w-full mt-2 mb-6">
+            <div className=" rounded-md flex w-full items-center justify-between relative h-[44px] dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] text-[rgb(79,94,113)] shadow-sm ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 cursor-not-allowed  ">
+              <span className="flex select-none items-center px-3 dark:text-background-foregroundD text-gray-900">
+                <MdDriveFileRenameOutline className=" h-5 w-5" />
+              </span>
+
+              <input
+                className=" w-full rounded-[8px] bg-transparent px-[12px] h-full block flex-1 border-0 py-1.5 pl-1 text-gray-900 dark:text-white outline-none  placeholder:text-gray-400 focus:ring-0 sm:leading-6  "
+                type="text"
+                name=""
+                required
+                value={courseInfo.level}
+                onChange={(e: any) =>
+                  setCourseInfo({ ...courseInfo, level: e.target.value })
+                }
+                id="level"
+                placeholder="Beginner/Intermediate/Expert"
+              />
+            </div>
+          </div>
+        </div>
+        <div className=" w-full flex justify-between mt-5 mb-8 ">
+          <div className="w-[48%] sm:w-[45%] relative">
             <label
               htmlFor=""
               className={`text-sm block w-full font-medium leading-6 font-Poppins text-black dark:text-white`}
             >
-              Course Level
+              Course Category
             </label>
-            <div className=" flex flex-1 w-full mt-2 mb-6">
-              <div className=" rounded-md flex w-full items-center justify-between relative h-[44px] dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] text-[rgb(79,94,113)] shadow-sm ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 cursor-not-allowed  ">
-                <span className="flex select-none items-center px-3 dark:text-background-foregroundD text-gray-900">
-                  <MdDriveFileRenameOutline className=" h-5 w-5" />
-                </span>
-
-                <input
-                  className=" w-full rounded-[8px] bg-transparent px-[12px] h-full block flex-1 border-0 py-1.5 pl-1 text-gray-900 dark:text-white outline-none  placeholder:text-gray-400 focus:ring-0 sm:leading-6  "
-                  type="text"
-                  name=""
-                  required
-                  value={courseInfo.level}
-                  onChange={(e: any) =>
-                    setCourseInfo({ ...courseInfo, level: e.target.value })
-                  }
-                  id="level"
-                  placeholder="Beginner/Intermediate/Expert"
-                />
-              </div>
+            <div className=" mt-2">
+              <span className="rounded-md shadow-sm">
+                <button
+                  onClick={toggleCategories}
+                  type="button"
+                  className="rounded-md flex w-full items-center text-gray-900 dark:text-white justify-center relative h-[44px] dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] shadow-sm ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 cursor-pointer  "
+                  id="options-menu"
+                  aria-haspopup="true"
+                  aria-expanded={isCategoriesOpen ? "true" : "false"}
+                >
+                  {courseInfo.categories !== ""
+                    ? courseInfo.categories
+                    : " Select category"}
+                </button>
+              </span>
             </div>
+
+            {isCategoriesOpen && (
+              <div
+                className="origin-top-right z-20 absolute right-0 text-gray-900 dark:text-white mt-2 w-56 rounded-md shadow-lg dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] bg-white"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="options-menu"
+              >
+                <div className="py-1" role="none">
+                  {categories.map((category: any) => (
+                    <button
+                      key={category?._id}
+                      onClick={handleCategoriesChange}
+                      value={category?.title}
+                      className="block px-4 py-2 text-sm w-full hover:bg-accent dark:hover:bg-accent-hover text-left"
+                      role="menuitem"
+                    >
+                      {category?.title}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="w-[48%] sm:w-[45%] relative">
@@ -295,7 +367,7 @@ const CourseInformation: FC<CourseInformationProps> = ({
                 <button
                   onClick={toggleDropdown}
                   type="button"
-                  className="rounded-md flex w-full items-center text-gray-900 dark:text-white justify-center relative h-[44px] dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] shadow-sm ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 cursor-not-allowed  "
+                  className="rounded-md flex w-full items-center text-gray-900 dark:text-white justify-center relative h-[44px] dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] shadow-sm ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 cursor-pointer  "
                   id="options-menu"
                   aria-haspopup="true"
                   aria-expanded={isDropdownOpen ? "true" : "false"}
@@ -316,7 +388,7 @@ const CourseInformation: FC<CourseInformationProps> = ({
                   <button
                     onClick={handleSelectChange}
                     value="youtube"
-                    className="block px-4 py-2 text-sm  w-full text-left"
+                    className="block px-4 py-2 text-sm hover:bg-accent dark:hover:bg-accent-hover   w-full text-left"
                     role="menuitem"
                   >
                     YouTube
@@ -324,7 +396,7 @@ const CourseInformation: FC<CourseInformationProps> = ({
                   <button
                     onClick={handleSelectChange}
                     value="personal"
-                    className="block px-4 py-2 text-sm  w-full text-left"
+                    className="block px-4 py-2 hover:bg-accent dark:hover:bg-accent-hover  text-sm  w-full text-left"
                     role="menuitem"
                   >
                     Personal

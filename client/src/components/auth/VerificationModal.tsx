@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, useEffect } from "react";
 import Image from "next/image";
 import React, { useRef, useState } from "react";

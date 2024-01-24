@@ -76,10 +76,29 @@ export const editLayout = async (
 
     if (type === "Banner") {
       const { image, title, subTitle } = req.body;
-      await cloudinary.v2.uploader.destroy(image.public_id);
-      const myCloud = await cloudinary.v2.uploader.upload(image, {
-        folder: "layout",
-      });
+      const bannerData: any = await layoutModel.findOne({ type: "Banner" });
+
+      let myCloud;
+
+      if (!image.startsWith("https")) {
+        // New image is being uploaded
+        if (bannerData && bannerData.image && bannerData.image.public_id) {
+          // Delete the old image from Cloudinary
+          await cloudinary.v2.uploader.destroy(bannerData.image.public_id);
+        }
+
+        // Upload the new image to Cloudinary
+        myCloud = await cloudinary.v2.uploader.upload(image, {
+          folder: "layout",
+        });
+      } else {
+        // Use the existing external image URL
+        myCloud = {
+          public_id: bannerData.banner.image.public_id,
+          secure_url: bannerData.banner.image.url,
+        };
+      }
+
       const banner = {
         image: {
           public_id: myCloud.public_id,

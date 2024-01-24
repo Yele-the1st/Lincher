@@ -2,8 +2,8 @@
 
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import DashboardHero from "@/components/admin/DashboardHero";
-import AllTeams from "@/components/admin/users/AllTeams";
-import AllUsers from "@/components/admin/users/AllUsers";
+import EditCategories from "@/components/admin/customization/EditCategories";
+
 import AdminProtected from "@/hooks/adminProtected";
 import Heading from "@/utils/Heading";
 import { FC } from "react";
@@ -21,11 +21,15 @@ const page: FC<pageProps> = ({}) => {
         />
         <div className=" flex h-screen">
           <div className=" ">
-            <AdminSidebar activeT={0} selectedT={10} header={"Manage Teams"} />
+            <AdminSidebar
+              activeT={3}
+              selectedT={6}
+              header={"Categories Customization"}
+            />
           </div>
           <div className=" w-full">
             <DashboardHero />
-            <AllTeams />
+            <EditCategories />
           </div>
         </div>
       </AdminProtected>
