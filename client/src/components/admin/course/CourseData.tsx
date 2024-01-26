@@ -20,12 +20,6 @@ const CourseData: FC<CourseDataProps> = ({
   active,
   setActive,
 }) => {
-  // const handleBenefitChange = (index: number, value: any) => {
-  //   const updatedBenefits = [...benefits];
-  //   updatedBenefits[index].title = value;
-  //   setBenefits(updatedBenefits);
-  // };
-
   const handleBenefitChange = (index: number, value: any) => {
     // Create a shallow copy of the benefits array
     const updatedBenefits = [...benefits];
@@ -43,11 +37,7 @@ const CourseData: FC<CourseDataProps> = ({
   const handleAddBenefit = () => {
     setBenefits([...benefits, { title: "" }]);
   };
-  // const handlePrerequisiteChange = (index: number, value: any) => {
-  //   const updatedPrerequisites = [...prerequisites];
-  //   updatedPrerequisites[index].title = value;
-  //   setPrerequisites(updatedPrerequisites);
-  // };
+
   const handlePrerequisiteChange = (index: number, value: any) => {
     // Create a shallow copy of the prerequisites array
     const updatedPrerequisites = [...prerequisites];

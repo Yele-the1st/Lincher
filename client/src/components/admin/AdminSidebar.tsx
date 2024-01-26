@@ -164,7 +164,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                 onClick={() => toggleTab(1)}
                 className={`group flex cursor-pointer justify-between items-center p-2 text-base font-normal dark:text-gray-100 hover:bg-background   dark:hover:bg-accent-hover ${
                   activeTab === 1
-                    ? " bg-background dark:bg-accent-hover rounded-t-[16px] "
+                    ? " bg-background dark:bg-accent-hover rounded-t-[3px] "
                     : " rounded-[3px] "
                 } `}
               >
@@ -195,7 +195,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                   </Link>
                   <div
                     onClick={() => setSelectedTab(2)}
-                    className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[16px] ${
+                    className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[3px] ${
                       selectedTab === 2
                         ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
@@ -216,7 +216,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                 onClick={() => toggleTab(2)}
                 className={`group cursor-pointer flex justify-between items-center p-2 text-base font-normal dark:text-gray-100 hover:bg-background  dark:hover:bg-accent-hover ${
                   activeTab === 2
-                    ? "bg-background dark:bg-accent-hover rounded-t-[16px] "
+                    ? "bg-background dark:bg-accent-hover rounded-t-[3px] "
                     : " rounded-[3px] "
                 } `}
               >
@@ -252,7 +252,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                   <Link
                     href={`/admin/courses`}
                     // onClick={() => setSelectedTab(1)}
-                    className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[16px] ${
+                    className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[3px] ${
                       selectedTab === 4
                         ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
@@ -271,7 +271,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                 onClick={() => toggleTab(3)}
                 className={`group cursor-pointer flex justify-between items-center p-2 text-base font-normal dark:text-gray-100 hover:bg-background   dark:hover:bg-accent-hover ${
                   activeTab === 3
-                    ? "bg-background dark:bg-accent-hover rounded-t-[16px] "
+                    ? "bg-background dark:bg-accent-hover rounded-t-[3px] "
                     : " rounded-[3px] "
                 } `}
               >
@@ -322,7 +322,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                   <Link
                     href={`/admin/categories`}
                     onClick={() => setSelectedTab(6)}
-                    className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[16px] ${
+                    className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[3px] ${
                       selectedTab === 6
                         ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
@@ -360,7 +360,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                 onClick={() => toggleTab(4)}
                 className={`group cursor-pointer flex justify-between items-center p-2 text-base font-normal dark:text-gray-100 hover:bg-background   dark:hover:bg-accent-hover ${
                   activeTab === 4
-                    ? "bg-background dark:bg-accent-hover rounded-t-[16px] "
+                    ? "bg-background dark:bg-accent-hover rounded-t-[3px] "
                     : " rounded-[3px] "
                 } `}
               >
@@ -378,8 +378,8 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
               </div>
               {activeTab === 4 && (
                 <div className="">
-                  <div
-                    onClick={() => setSelectedTab(7)}
+                  <Link
+                    href={`/admin/courses-analytics`}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
                       selectedTab === 7
                         ? " bg-primary text-white"
@@ -392,9 +392,9 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     <span className="ml-3 font-poppins transition duration-75">
                       Course Analytics
                     </span>
-                  </div>
-                  <div
-                    onClick={() => setSelectedTab(8)}
+                  </Link>
+                  <Link
+                    href={`/admin/orders-analytics`}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
                       selectedTab === 8
                         ? " bg-primary text-white"
@@ -407,10 +407,10 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     <span className="ml-3 font-poppins transition duration-75">
                       Order Analytics
                     </span>
-                  </div>
-                  <div
-                    onClick={() => setSelectedTab(9)}
-                    className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[16px] ${
+                  </Link>
+                  <Link
+                    href={`/admin/users-analytics`}
+                    className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[3px] ${
                       selectedTab === 9
                         ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
@@ -422,7 +422,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     <span className="ml-3 font-poppins transition duration-75">
                       User Analytics
                     </span>
-                  </div>
+                  </Link>
                 </div>
               )}
             </li>
@@ -444,18 +444,18 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
               </div>
             </div>
 
-            <div className="max-w-sm p-4 bg-background dark:bg-accent-hover rounded-lg shadow  ">
+            <div className="max-w-sm p-4 bg-background dark:bg-accent-hover rounded-[3px] shadow  ">
               <div className=" bg-[#F0F5F8] p-0.5 max-w-fit mb-2 rounded-md">
                 <MdAddBox className={` text-primary w-8 h-8`} />
               </div>
 
               <h5 className="mb-2 text-xl font-semibold tracking-tight dark:text-gray-100  ">
-                Request a new Course
+                Request a new Feature
               </h5>
 
               <p className="mb-3 font-normal text-sm dark:text-gray-400  ">
                 Do you need a tool that we are missing or one that you think
-                write.ai could be good at?
+                Lincher could be good at?
               </p>
               <div className="inline-flex text-sm items-center hover:underline">
                 lets grow together

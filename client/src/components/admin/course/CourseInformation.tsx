@@ -3,7 +3,7 @@
 import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
-import { BiSolidLockAlt } from "react-icons/bi";
+import toast from "react-hot-toast";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 
 interface CourseInformationProps {
@@ -58,6 +58,13 @@ const CourseInformation: FC<CourseInformationProps> = ({
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+
+    // Check if a category is selected
+    if (courseInfo.categories === "") {
+      toast.error("Please select a category.");
+      return;
+    }
+
     setActive(active + 1);
   };
 
@@ -333,7 +340,7 @@ const CourseInformation: FC<CourseInformationProps> = ({
 
             {isCategoriesOpen && (
               <div
-                className="origin-top-right z-20 absolute right-0 text-gray-900 dark:text-white mt-2 w-56 rounded-md shadow-lg dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] bg-white"
+                className="origin-top-left z-20 absolute text-gray-900 dark:text-white mt-2 w-56 rounded-md shadow-lg dark:bg-background-darkHover border dark:border-[#1E1E1E] border-[rgb(232,237,241)] bg-white"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="options-menu"

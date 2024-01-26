@@ -1,7 +1,7 @@
 "use client";
 
 import { lazy, Suspense, FC, useEffect, useState } from "react";
-import CourseInformation from "./CourseInformation";
+
 import CourseOptions from "./CourseOptions";
 import CourseOptionsMobile from "./CourseOptionsMobile";
 import { useCreateCourseMutation } from "@/redux/features/courses/coursesApi";
@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { redirect } from "next/navigation";
 import Loader from "@/components/Loader/Loader";
 
+const LazyCourseInformation = lazy(() => import("./CourseInformation"));
 const LazyCourseData = lazy(() => import("./CourseData"));
 const LazyCourseContent = lazy(() => import("./CourseContent"));
 const LazyCoursePreview = lazy(() => import("./CoursePreview"));
@@ -66,6 +67,8 @@ const CreateCourse: FC<CreateCourseProps> = ({}) => {
   ]);
   const [courseData, setCourseData] = useState({});
 
+  console.log(courseData);
+
   const handleSubmit = async () => {
     // format benefits array
     const formattedBenefits = benefits.map((benefit) => ({
@@ -81,6 +84,7 @@ const CreateCourse: FC<CreateCourseProps> = ({}) => {
     const formattedCourseContentData = courseContentData.map(
       (courseContent) => ({
         videoUrl: courseContent.videoUrl,
+        videoLength: courseContent.videoLength,
         title: courseContent.title,
         description: courseContent.description,
         videoSection: courseContent.videoSection,
@@ -96,6 +100,7 @@ const CreateCourse: FC<CreateCourseProps> = ({}) => {
     const data = {
       name: courseInfo.name,
       description: courseInfo.description,
+      categories: courseInfo.categories,
       price: courseInfo.price,
       type: courseInfo.type,
       estimatedPrice: courseInfo.estimatedPrice,
@@ -130,12 +135,14 @@ const CreateCourse: FC<CreateCourseProps> = ({}) => {
             </div>
             <div className=" w-full xl:w-8/12">
               {active === 0 && (
-                <CourseInformation
-                  courseInfo={courseInfo}
-                  setCourseInfo={setCourseInfo}
-                  active={active}
-                  setActive={setActive}
-                />
+                <Suspense fallback={<Loader />}>
+                  <LazyCourseInformation
+                    courseInfo={courseInfo}
+                    setCourseInfo={setCourseInfo}
+                    active={active}
+                    setActive={setActive}
+                  />
+                </Suspense>
               )}
               {active === 1 && (
                 <Suspense fallback={<Loader />}>

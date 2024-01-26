@@ -56,6 +56,7 @@ const CourseContent: FC<CourseContentProps> = ({
       item.title === "" ||
       item.description === "" ||
       item.videoUrl === "" ||
+      item.videoLength === "" ||
       item.links[0].title === "" ||
       item.links[0].url === ""
     ) {
@@ -77,6 +78,7 @@ const CourseContent: FC<CourseContentProps> = ({
         title: "",
         description: "",
         videoSection: newVideoSection,
+        videoLength: "",
         links: [{ title: "", url: "" }],
       };
 
@@ -89,6 +91,7 @@ const CourseContent: FC<CourseContentProps> = ({
       courseContentData[courseContentData.length - 1].title === "" ||
       courseContentData[courseContentData.length - 1].description === "" ||
       courseContentData[courseContentData.length - 1].videoUrl === "" ||
+      courseContentData[courseContentData.length - 1].videoLength === "" ||
       courseContentData[courseContentData.length - 1].links[0].title === "" ||
       courseContentData[courseContentData.length - 1].links[0].url === ""
     ) {
@@ -97,6 +100,7 @@ const CourseContent: FC<CourseContentProps> = ({
       setActiveSection(activeSection + 1);
       const newContent = {
         videoUrl: "",
+        videoLength: "",
         title: "",
         description: "",
         videoSection: `Untitled Section ${activeSection}`,
@@ -115,6 +119,7 @@ const CourseContent: FC<CourseContentProps> = ({
       courseContentData[courseContentData.length - 1].title === "" ||
       courseContentData[courseContentData.length - 1].description === "" ||
       courseContentData[courseContentData.length - 1].videoUrl === "" ||
+      courseContentData[courseContentData.length - 1].videoLength === "" ||
       courseContentData[courseContentData.length - 1].links[0].title === "" ||
       courseContentData[courseContentData.length - 1].links[0].url === ""
     ) {
@@ -254,6 +259,30 @@ const CourseContent: FC<CourseContentProps> = ({
                                 setCourseContentData(updatedData);
                               }}
                               placeholder="sddfrd..."
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="my-3">
+                        <label className="text-base block font-medium leading-6 font-Poppins text-black dark:text-white">
+                          Video Length (in minutes)
+                        </label>
+                        <div className=" flex flex-1 w-full mt-2 mb-6">
+                          <div className=" rounded-md flex w-full items-center justify-between relative h-[44px] dark:bg-accent-hover bg-[#f0f5f8] border dark:border-[#1E1E1E] border-[rgb(232,237,241)] text-[rgb(79,94,113)] shadow-sm ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 cursor-not-allowed  ">
+                            <span className="flex select-none items-center px-3 dark:text-background-foregroundD text-gray-900">
+                              <MdDriveFileRenameOutline className=" h-5 w-5" />
+                            </span>
+
+                            <input
+                              className=" w-full rounded-[8px] bg-transparent px-[12px] h-full block flex-1 border-0 py-1.5 pl-1 text-gray-900 dark:text-white outline-none  placeholder:text-gray-400 focus:ring-0 sm:leading-6  "
+                              type="number"
+                              value={item.videoLength}
+                              onChange={(e: any) => {
+                                const updatedData = [...courseContentData];
+                                updatedData[index].videoLength = e.target.value;
+                                setCourseContentData(updatedData);
+                              }}
+                              placeholder="20"
                             />
                           </div>
                         </div>
