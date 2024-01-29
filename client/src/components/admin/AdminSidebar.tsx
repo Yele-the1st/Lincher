@@ -148,7 +148,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
           <ul className="space-y-2">
             <li>
               <Link
-                href="/"
+                href={`/admin`}
                 className="group flex items-center p-2 text-base font-normal dark:text-gray-100 rounded-[3px] hover:bg-background  dark:hover:bg-accent-hover"
               >
                 <MdSpaceDashboard
@@ -193,8 +193,8 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                       Users
                     </span>
                   </Link>
-                  <div
-                    onClick={() => setSelectedTab(2)}
+                  <Link
+                    href={`/admin/invoices`}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[3px] ${
                       selectedTab === 2
                         ? " bg-primary text-white"
@@ -207,7 +207,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     <span className="ml-3 font-poppins transition duration-75">
                       Invoices
                     </span>
-                  </div>
+                  </Link>
                 </div>
               )}
             </li>
@@ -292,7 +292,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                   <Link
                     href={`/admin/hero`}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
-                      selectedTab === 4
+                      selectedTab === 5
                         ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
@@ -307,7 +307,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                   <Link
                     href={`/admin/faq`}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
-                      selectedTab === 5
+                      selectedTab === 6
                         ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
@@ -323,7 +323,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                     href={`/admin/categories`}
                     onClick={() => setSelectedTab(6)}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[3px] ${
-                      selectedTab === 6
+                      selectedTab === 7
                         ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
@@ -343,7 +343,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
               <Link
                 href={`/admin/team`}
                 className={` group flex items-center rounded-[3px] p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
-                  selectedTab === 10
+                  selectedTab === 8
                     ? "bg-primary text-white"
                     : "hover:bg-background dark:hover:bg-accent-hover "
                 } `}
@@ -381,7 +381,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                   <Link
                     href={`/admin/courses-analytics`}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
-                      selectedTab === 7
+                      selectedTab === 9
                         ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
@@ -396,7 +396,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                   <Link
                     href={`/admin/orders-analytics`}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 ${
-                      selectedTab === 8
+                      selectedTab === 10
                         ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}
@@ -411,7 +411,7 @@ const AdminSidebar: FC<AdminSidebarProps> = ({
                   <Link
                     href={`/admin/users-analytics`}
                     className={` group flex items-center p-2 text-base font-normal cursor-pointer  hover:shadow-xl dark:text-gray-100 rounded-b-[3px] ${
-                      selectedTab === 9
+                      selectedTab === 11
                         ? " bg-primary text-white"
                         : "bg-background dark:bg-accent-hover dark:hover:bg-background-darkHover hover:bg-accent "
                     } `}

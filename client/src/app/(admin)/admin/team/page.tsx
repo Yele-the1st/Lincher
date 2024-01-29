@@ -20,7 +20,7 @@ const page: FC<pageProps> = ({}) => {
         />
         <div className=" flex h-screen">
           <div className=" ">
-            <AdminSidebar activeT={0} selectedT={10} header={"Manage Teams"} />
+            <AdminSidebar activeT={0} selectedT={8} header={"Manage Teams"} />
           </div>
           <div className=" w-full">
             <DashboardHero />

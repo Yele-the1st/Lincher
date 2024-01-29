@@ -36,6 +36,7 @@ export const isAuthenticated = catchAsyncError(
 
       if (error.name === "TokenExpiredError") {
         // Handle token expiration, e.g., update token
+        console.log(error);
         console.log("Handling Token Expiry");
         try {
           await updateAccessToken(req, res, next);

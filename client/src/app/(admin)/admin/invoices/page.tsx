@@ -2,7 +2,8 @@
 
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import DashboardHero from "@/components/admin/DashboardHero";
-import EditCategories from "@/components/admin/customization/EditCategories";
+
+import AllInvoices from "@/components/admin/order/AllInvoices";
 
 import AdminProtected from "@/hooks/adminProtected";
 import Heading from "@/utils/Heading";
@@ -20,15 +21,11 @@ const page: FC<pageProps> = ({}) => {
       />
       <div className=" flex h-screen">
         <div className=" ">
-          <AdminSidebar
-            activeT={3}
-            selectedT={7}
-            header={"Categories Customization"}
-          />
+          <AdminSidebar activeT={1} selectedT={2} header={"All Invoices"} />
         </div>
         <div className=" w-full">
           <DashboardHero />
-          <EditCategories />
+          <AllInvoices isDashboard={false} />
         </div>
       </div>
     </AdminProtected>

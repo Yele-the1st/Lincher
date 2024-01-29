@@ -23,7 +23,7 @@ const page: FC<pageProps> = ({}) => {
           <div className=" ">
             <AdminSidebar
               activeT={3}
-              selectedT={4}
+              selectedT={5}
               header={"Hero Customization"}
             />
           </div>

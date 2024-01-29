@@ -18,7 +18,7 @@ const page: FC<pageProps> = ({}) => {
       />
       <div className="flex h-screen">
         <div className=" ">
-          <AdminSidebar selectedT={7} activeT={4} header={"Course Analytics"} />
+          <AdminSidebar selectedT={9} activeT={4} header={"Course Analytics"} />
         </div>
         <div className="w-full min-h-screen ">
           <DashboardHeader />

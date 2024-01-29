@@ -22,6 +22,23 @@ const initializeApp = async () => {
   await store.dispatch(
     apiSlice.endpoints.loadUser.initiate({}, { forceRefetch: true })
   );
+
+  // // Refresh token every 4 minutes (240,000 milliseconds)
+  // const refreshTokenInterval = 240000;
+
+  // const refreshToken = async () => {
+  //   try {
+  //     // Call your refresh token logic here
+  //     // For example:
+  //     await store.dispatch(
+  //       apiSlice.endpoints.refreshToken.initiate({}, { forceRefetch: true })
+  //     );
+  //   } catch (error) {
+  //     console.error("Error refreshing token:", error);
+  //   }
+  // };
+
+  // setInterval(refreshToken, refreshTokenInterval);
 };
 
 initializeApp();
