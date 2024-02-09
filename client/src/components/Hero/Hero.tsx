@@ -3,10 +3,13 @@ import Link from "next/link";
 import { FC } from "react";
 import HeroComponent1 from "./HeroComponent1";
 import HeroSearchbar from "./HeroSearchbar";
+import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
 
-interface HeroProps {}
+interface HeroProps {
+  data: any;
+}
 
-const Hero: FC<HeroProps> = ({}) => {
+const Hero: FC<HeroProps> = ({ data }) => {
   return (
     <div className="">
       <div className="mx-auto h-full grid max-w-2xl grid-cols-1 items-center gap-x-8 gap-y-16 px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:grid-cols-2 lg:px-8">
@@ -30,34 +33,35 @@ const Hero: FC<HeroProps> = ({}) => {
             </div>
           </div>
           <h2 className=" text-6xl md:text-7xl font-semibold font-Poppins tracking-tight text-background-foregroundL dark:text-background-foregroundD ">
-            Improve your online learning experience instantly
+            {data?.layout?.banner?.title}
           </h2>
           <p className="mt-8 max-w-sm font-light font-Poppins text-background-foregroundL dark:text-background-foregroundD ">
-            Elevate your e-learning experience—access a world of knowledge and
-            insights with our cutting-edge{" "}
-            <strong className=" italic text-lg font-Josefin">
+            {data?.layout?.banner?.subTitle}
+            {/* <strong className=" italic text-lg font-Josefin">
               LMS platform.
-            </strong>
+            </strong> */}
           </p>
           <div className=" mt-8">
             <HeroSearchbar />
           </div>
         </div>
         <div className=" relative">
-          <div className=" hidden md:flex absolute shadow-md -bottom-36 p-0.5 rounded-[20px] -right-6">
+          {/* <div className=" hidden md:flex absolute shadow-md -bottom-36 p-0.5 rounded-[20px] -right-6">
             <HeroComponent1 />
-          </div>
-          <div className=" p-2 dark:bg-background-darkHover bg-accent shadow-md rounded-[16px]">
-            <Image
-              priority
-              quality={100}
-              src={`/assets/NFTMarketplace.png`}
-              alt=""
-              height={1000}
-              width={1000}
-              className="h-full w-full rounded-[16px]"
-            />
-          </div>
+          </div> */}
+          {data && (
+            <div className=" p-2 dark:bg-background-darkHover bg-accent shadow-md rounded-[16px]">
+              <Image
+                priority
+                quality={100}
+                src={data?.layout?.banner?.image?.url}
+                alt="hero image"
+                height={1000}
+                width={1000}
+                className="h-full w-full rounded-[16px]"
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

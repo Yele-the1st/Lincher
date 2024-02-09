@@ -35,7 +35,7 @@ const Profile: FC<ProfileProps> = ({ user }) => {
   }
 
   return (
-    <div className=" mx-auto gap-6 flex w-[85%]">
+    <div className=" mx-auto gap-6 flex w-full 800px:w-[85%] pr-3 ">
       <div
         className={`w-[60px] 800px:w-[310px] h-[450px] bg-background dark:bg-background-dark bg-opacity-90 border dark:border-[#1E1E1E] rounded-[16px] shadow-sm sticky top-[120px] left-[10px] md:left-[30px]`}
       >

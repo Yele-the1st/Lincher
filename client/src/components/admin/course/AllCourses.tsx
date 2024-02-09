@@ -24,6 +24,8 @@ const AllCourses: FC<AllCoursesProps> = ({}) => {
     { refetchOnMountOrArgChange: true }
   );
 
+  console.log(data.courses);
+
   const columns = [
     { field: "id", headerName: "ID", width: 110 },
     { field: "title", headerName: "Course Title", width: 300 },

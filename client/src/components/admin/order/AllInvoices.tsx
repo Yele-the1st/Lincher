@@ -47,6 +47,8 @@ const AllInvoices: FC<AllInvoicesProps> = ({ isDashboard }) => {
     }
   }, [coursesData?.courses, data, usersData?.users]);
 
+  console.log(orderData);
+
   const columns = [
     { field: "id", headerName: "ID", flex: 0.3 },
     { field: "name", headerName: "Name", flex: isDashboard ? 0.6 : 0.5 },
