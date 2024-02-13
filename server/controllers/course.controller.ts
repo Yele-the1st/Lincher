@@ -86,6 +86,7 @@ export const editCourse = async (
 
     // Invalidate cache after creating a new course
     await redis.del("allCourses");
+    await redis.del(courseId);
 
     res.status(201).json({
       success: true,

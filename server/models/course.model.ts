@@ -77,7 +77,7 @@ const courseDataSchema = new Schema<ICourseData>({
   title: String,
   videoSection: String,
   description: String,
-  videoLength: String,
+  videoLength: Number,
   links: [linkSchema],
   suggestion: String,
   questions: [commentSchema],

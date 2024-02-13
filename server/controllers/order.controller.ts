@@ -112,3 +112,15 @@ export const getAllOrders = async (
     return next(new ErrorHandler(error.message, 400));
   }
 };
+
+// send stripe publishable key
+export const sendStripePublishableKey = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  res.status(201).json({
+    success: true,
+    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+  });
+};
