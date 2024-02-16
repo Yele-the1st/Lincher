@@ -7,6 +7,14 @@ import sendMail from "../utils/sendMail";
 import notificationModel from "../models/notification.model";
 import { redis } from "../utils/redis";
 import * as orderService from "../services/order.services";
+import { config } from "dotenv";
+import { Stripe } from "stripe";
+
+config();
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2023-10-16",
+});
 
 // create order
 export const createOrder = async (
@@ -16,6 +24,20 @@ export const createOrder = async (
 ) => {
   try {
     const { courseId, payment_info } = req.body as IOrder;
+
+    if (payment_info) {
+      if ("id" in payment_info) {
+        const paymentIntentId = payment_info.id as string; // Explicitly cast to string
+        const paymentIntent = await stripe.paymentIntents.retrieve(
+          paymentIntentId
+        );
+
+        if (paymentIntent.status !== "succeeded") {
+          return next(new ErrorHandler("Payment not authorised", 400));
+        }
+      }
+    }
+
     const userId = req.user?._id;
     const user = await userModel.findById(userId);
     const courseExistInUser = user?.courses.some(
@@ -55,6 +77,8 @@ export const createOrder = async (
     };
 
     user?.courses.push(course?._id);
+
+    await redis.set(req.user?._id, JSON.stringify(user));
 
     await user?.save();
 
@@ -123,4 +147,31 @@ export const sendStripePublishableKey = async (
     success: true,
     publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
   });
+};
+
+// new payment
+export const newPayment = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const myPayment = await stripe.paymentIntents.create({
+      amount: req.body.amount,
+      currency: "USD",
+      metadata: {
+        company: "Lincher",
+      },
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
+
+    res.status(201).json({
+      success: true,
+      client_secret: myPayment.client_secret,
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400));
+  }
 };
